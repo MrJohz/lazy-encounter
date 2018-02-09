@@ -1,0 +1,13 @@
+scripts:
+  default: 'nps build && concurrently --raw "nps build.watch" "nps dev-server"'
+  build:
+    default: 'nps build.bundle'
+    watch: 'concurrently --kill-others-on-fail --names "BUNDL" -c "bgBlue.bold"
+      "nps build.bundle.watch"
+    '
+
+    bundle:
+      default: 'webpack --config webpack.config.js'
+      watch: 'webpack --config webpack.config.js --watch'
+
+  dev-server: 'http-server ./dist/ -o -c-1 --silent'

@@ -1,0 +1,39 @@
+{
+  "name": "police-app-frontend",
+  "version": "0.1.0",
+  "description": "~~~",
+  "main": "dist/index.js",
+  "author": "Jonathan Frere",
+  "license": "MIT",
+  "scripts": {
+    "develop": "nps default"
+  },
+  "devDependencies": {
+    "@types/classnames": "^2.2.0",
+    "@types/delay": "^2.0.1",
+    "@types/react": "^16.0.25",
+    "@types/react-dom": "^16.0.3",
+    "@types/webpack-env": "^1.13.2",
+    "awesome-typescript-loader": "^3.4.0",
+    "chokidar-cli": "^1.2.0",
+    "concurrently": "^3.5.1",
+    "copyfiles": "^1.2.0",
+    "css-loader": "^0.28.4",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "html-webpack-plugin": "^2.30.1",
+    "http-server": "^0.11.1",
+    "nps": "^5.6.0",
+    "style-loader": "^0.20.1",
+    "typescript": "^2.6.2",
+    "webpack": "^3.9.0",
+    "webpack-combine-loaders": "^2.0.3"
+  },
+  "dependencies": {
+    "abortcontroller-polyfill": "^1.0.8",
+    "classnames": "^2.2.5",
+    "delay": "^2.0.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "tslib": "^1.7.1"
+  }
+}
