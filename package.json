@@ -24,7 +24,7 @@
     "http-server": "^0.11.1",
     "nps": "^5.6.0",
     "style-loader": "^0.20.1",
-    "typescript": "^2.6.2",
+    "typescript": "^2.8.0-dev.20180210",
     "webpack": "^3.9.0",
     "webpack-combine-loaders": "^2.0.3"
   },
@@ -32,6 +32,8 @@
     "abortcontroller-polyfill": "^1.0.8",
     "classnames": "^2.2.5",
     "delay": "^2.0.0",
+    "mobx": "^3.5.1",
+    "mobx-react": "^4.4.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "tslib": "^1.7.1"

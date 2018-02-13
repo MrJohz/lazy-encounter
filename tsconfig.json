@@ -16,7 +16,10 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     /* Source Map Options */
-    "inlineSources": true
+    "inlineSources": true,
+
+    /* experimental decorators for mobx */
+    "experimentalDecorators": true
   },
   "include": [
     "./src/js/**/*.ts",
