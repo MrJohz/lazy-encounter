@@ -1,10 +1,11 @@
-import { action, observable } from 'mobx';
+import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import React from 'react';
 
-import './Encounter.css';
 import { Creature, CreatureGroup, CreatureStore } from '../../models/creatures';
+import { FiniteStateMachine } from '../../utils/finite-state-machine';
 import { DisplayCreature } from './DisplayCreature';
+import './Encounter.css';
 import { SelectInstance } from './SelectInstance';
 import { SelectKind } from './SelectKind';
 
@@ -31,39 +32,27 @@ function displayCreature(creature: Creature): Page {
 export class Encounter extends React.Component<Props> {
 
     @observable
-    private currentPage: Page = selectKind();
-
-    transition0<T>(cb: () => Page): () => void {
-        return action(() => {
-            this.currentPage = cb();
-        });
-    }
-
-    transition<T>(cb: (arg: T) => Page): (arg: T) => void {
-        return action((arg: T) => {
-            this.currentPage = cb(arg);
-        });
-    }
+    private page = new FiniteStateMachine(selectKind());
 
     constructor(props: Props) {
         super(props);
     }
 
     render() {
-        switch (this.currentPage.kind) {
+        switch (this.page.state.kind) {
             case 'SelectKind':
                 return <SelectKind creatures={this.props.store.creatures}
-                                   onSelect={this.transition((creature: CreatureGroup) =>
+                                   onSelect={this.page.transition((creature: CreatureGroup) =>
                                        creature.creatures.length > 1
                                            ? selectInstance(creature)
                                            : displayCreature(creature.creatures[0]))}/>;
             case 'SelectInstance':
-                return <SelectInstance creatures={this.currentPage.creatures}
-                                       onSelect={this.transition(displayCreature)}
-                                       onBack={this.transition0(selectKind)}/>;
+                return <SelectInstance creatures={this.page.state.creatures}
+                                       onSelect={this.page.transition(displayCreature)}
+                                       onBack={this.page.transition(selectKind)}/>;
             case 'DisplayCreature':
-                return <DisplayCreature creature={this.currentPage.creature}
-                                        onBack={this.transition0(selectKind)}/>;
+                return <DisplayCreature creature={this.page.state.creature}
+                                        onBack={this.page.transition(selectKind)}/>;
         }
     }
 }
