@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { Creature, CreatureGroup } from '../../models/creatures';
-import { Callback } from '../../utils/jsx-props';
+import { Callback, NoArgCallback } from '../../utils/jsx-props';
 
 type DisplayTypeProps = { creature: Creature } & Callback<'onSelect', Creature>;
 
@@ -11,15 +11,21 @@ function DisplayType({ creature, onSelect }: DisplayTypeProps) {
     </div>;
 }
 
-type SelectInstanceProps = { creatures: CreatureGroup } & Callback<'onSelect', Creature>
+type SelectInstanceProps
+    = { creatures: CreatureGroup }
+    & Callback<'onSelect', Creature>
+    & NoArgCallback<'onBack'>;
 
 @observer
 export class SelectInstance extends React.PureComponent<SelectInstanceProps> {
     render() {
-        const {creatures, onSelect} = this.props;
-        return <div>{
-            creatures.creatures.map(creature =>
-                <DisplayType key={creature.name} creature={creature} onSelect={onSelect}/>,
-            )}</div>
+        const { creatures, onSelect, onBack } = this.props;
+        return <div>
+            <div onClick={onBack}>BACK</div>
+            {
+                creatures.creatures.map(creature =>
+                    <DisplayType key={creature.name} creature={creature} onSelect={onSelect}/>)
+            }
+        </div>;
     }
 }

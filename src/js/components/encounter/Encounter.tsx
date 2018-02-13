@@ -4,6 +4,7 @@ import React from 'react';
 
 import './Encounter.css';
 import { Creature, CreatureGroup, CreatureStore } from '../../models/creatures';
+import { DisplayCreature } from './DisplayCreature';
 import { SelectInstance } from './SelectInstance';
 import { SelectKind } from './SelectKind';
 
@@ -32,10 +33,14 @@ export class Encounter extends React.Component<Props> {
     @observable
     private currentPage: Page = selectKind();
 
+    transition0<T>(cb: () => Page): () => void {
+        return action(() => {
+            this.currentPage = cb();
+        });
+    }
+
     transition<T>(cb: (arg: T) => Page): (arg: T) => void {
-        console.log('created transition with', cb);
         return action((arg: T) => {
-            console.log('transition called with', arg);
             this.currentPage = cb(arg);
         });
     }
@@ -54,12 +59,11 @@ export class Encounter extends React.Component<Props> {
                                            : displayCreature(creature.creatures[0]))}/>;
             case 'SelectInstance':
                 return <SelectInstance creatures={this.currentPage.creatures}
-                                       onSelect={this.transition(displayCreature)}/>;
+                                       onSelect={this.transition(displayCreature)}
+                                       onBack={this.transition0(selectKind)}/>;
             case 'DisplayCreature':
-                return <div onClick={this.transition(selectKind)}>
-                    <div>{this.currentPage.creature.name} - {this.currentPage.creature.attributes}</div>
-                    <pre>{JSON.stringify(this.currentPage.creature, null, 2)}</pre>
-                </div>;
+                return <DisplayCreature creature={this.currentPage.creature}
+                                        onBack={this.transition0(selectKind)}/>;
         }
     }
 }
