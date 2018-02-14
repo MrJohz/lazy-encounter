@@ -7,7 +7,7 @@ import { Square } from '../stylish/Square';
 type DisplayCreatureProps = { creature: Creature } & NoArgCallback<'onBack'>
 
 @observer
-export class DisplayCreature extends React.PureComponent<DisplayCreatureProps> {
+export class DisplayCreature extends React.Component<DisplayCreatureProps> {
     render() {
         const { creature, onBack } = this.props;
 

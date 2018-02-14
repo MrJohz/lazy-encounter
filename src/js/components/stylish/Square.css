@@ -3,6 +3,7 @@
     width: 33%;
     border: 4px blueviolet solid;
     padding: 0.4em;
+    margin-top: 0.4em;
 }
 
 .square::before {

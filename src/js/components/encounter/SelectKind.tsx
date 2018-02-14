@@ -15,7 +15,7 @@ function DisplayType({ creatureGroup, onSelect }: DisplayTypeProps) {
 type SelectKindProps = { creatures: CreatureGroup[] } & Callback<'onSelect', CreatureGroup>
 
 @observer
-export class SelectKind extends React.PureComponent<SelectKindProps> {
+export class SelectKind extends React.Component<SelectKindProps> {
     render() {
         const { creatures, onSelect } = this.props;
         return creatures.map(creatureGroup =>

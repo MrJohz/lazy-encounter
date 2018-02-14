@@ -19,11 +19,11 @@ type SelectInstanceProps
     & NoArgCallback<'onBack'>;
 
 @observer
-export class SelectInstance extends React.PureComponent<SelectInstanceProps> {
+export class SelectInstance extends React.Component<SelectInstanceProps> {
     render() {
         const { creatures, onSelect, onBack } = this.props;
         return [
-            <Back {...{ onBack }} />,
+            <Back key={'__BACK__'} {...{ onBack }} />,
             ...creatures.creatures.map(creature =>
                 <DisplayType key={creature.name} creature={creature} onSelect={onSelect}/>),
         ];
