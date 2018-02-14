@@ -2,6 +2,7 @@ import { observer } from 'mobx-react';
 import React from 'react';
 import { Creature } from '../../models/creatures';
 import { NoArgCallback } from '../../utils/jsx-props';
+import { Square } from '../stylish/Square';
 
 type DisplayCreatureProps = { creature: Creature } & NoArgCallback<'onBack'>
 
@@ -9,9 +10,10 @@ type DisplayCreatureProps = { creature: Creature } & NoArgCallback<'onBack'>
 export class DisplayCreature extends React.PureComponent<DisplayCreatureProps> {
     render() {
         const { creature, onBack } = this.props;
-        return <div>
-            <div onClick={onBack}>BACK</div>
+
+        return <Square>
+            <div onClick={onBack}>&lt;- BACK</div>
             <pre>{JSON.stringify(creature, null, 2)}</pre>
-        </div>;
+        </Square>;
     }
 }

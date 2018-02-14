@@ -2,13 +2,14 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { CreatureGroup } from '../../models/creatures';
 import { Callback } from '../../utils/jsx-props';
+import { Square } from '../stylish/Square';
 
 type DisplayTypeProps = { creatureGroup: CreatureGroup } & Callback<'onSelect', CreatureGroup>;
 
 function DisplayType({ creatureGroup, onSelect }: DisplayTypeProps) {
-    return <div onClick={() => onSelect(creatureGroup)}>
+    return <Square onClick={() => onSelect(creatureGroup)}>
         {creatureGroup.name} - {creatureGroup.creatures.length}
-    </div>;
+    </Square>;
 }
 
 type SelectKindProps = { creatures: CreatureGroup[] } & Callback<'onSelect', CreatureGroup>
@@ -17,9 +18,7 @@ type SelectKindProps = { creatures: CreatureGroup[] } & Callback<'onSelect', Cre
 export class SelectKind extends React.PureComponent<SelectKindProps> {
     render() {
         const { creatures, onSelect } = this.props;
-        return <div>{
-            creatures.map(creatureGroup =>
-                <DisplayType key={creatureGroup.name} creatureGroup={creatureGroup} onSelect={onSelect}/>)
-        }</div>;
+        return creatures.map(creatureGroup =>
+                <DisplayType key={creatureGroup.name} creatureGroup={creatureGroup} onSelect={onSelect}/>);
     }
 }

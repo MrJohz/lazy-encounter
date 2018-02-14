@@ -5,7 +5,6 @@ import React from 'react';
 import { Creature, CreatureGroup, CreatureStore } from '../../models/creatures';
 import { FiniteStateMachine } from '../../utils/finite-state-machine';
 import { DisplayCreature } from './DisplayCreature';
-import './Encounter.css';
 import { SelectInstance } from './SelectInstance';
 import { SelectKind } from './SelectKind';
 

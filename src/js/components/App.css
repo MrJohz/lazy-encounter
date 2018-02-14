@@ -3,7 +3,19 @@
    License: none (public domain)
 */
 
-/* Colour Scheme: http://paletton.com/#uid=15A0u0k4Vuh0tSk2eDZ8ppScIlR */
+.app {
+    position: relative;
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
+
+.header {
+    border: black solid 1px;
+    width: 100%;
+}
 
 :global(html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,

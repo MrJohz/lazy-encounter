@@ -1,8 +1,10 @@
-export type Children<T = JSX.Element | string> = Child<T> | ManyChildren<T>;
-export type Child<T = JSX.Element | string> = { children: T };
-export type ManyChildren<T = JSX.Element | string> = { children: T[] };
+import { ReactNode } from 'react';
 
-export function childrenise<T = JSX.Element | string>(children: T | T[]): T[] {
+export type Children<T = ReactNode> = Child<T> | ManyChildren<T>;
+export type Child<T = ReactNode> = { children: T };
+export type ManyChildren<T = ReactNode> = { children: T[] };
+
+export function childrenise<T = ReactNode>(children: T | T[]): T[] {
     if (!Array.isArray(children)) {
         return [children];
     } else {

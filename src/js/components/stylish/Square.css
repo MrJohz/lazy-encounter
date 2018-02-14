@@ -1,0 +1,12 @@
+.square {
+    box-sizing: border-box;
+    width: 33%;
+    border: 4px blueviolet solid;
+    padding: 0.4em;
+}
+
+.square::before {
+    content: '';
+    padding-top: 100%;
+    float:left;
+}
