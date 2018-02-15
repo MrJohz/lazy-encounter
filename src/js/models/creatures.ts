@@ -75,6 +75,13 @@ export function _initCreatures(store: CreatureStore): void {
             creature('Goblin 1', 15),
             creature('Goblin 2', 16),
             creature('Goblin 4', 12),
+            creature('Goblin 5', 12),
+            creature('Goblin 6', 12),
+            creature('Goblin 7', 12),
+            creature('Goblin 8', 12),
+            creature('Goblin 9', 12),
+            creature('Goblin 10', 12),
+            creature('Goblin 11', 12),
         ],
     });
 

@@ -1,9 +1,9 @@
 import React, { MouseEvent } from 'react';
+import classNames from 'classnames';
 
 import { Children, childrenise, Callback, Optional, ClassName } from '../../utils/jsx-props';
 
 import styles from './Square.css';
-import classNames from 'classnames';
 
 type Props = Children
     & Optional<ClassName>

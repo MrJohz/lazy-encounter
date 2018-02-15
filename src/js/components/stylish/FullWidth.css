@@ -1,0 +1,12 @@
+.fullWidth {
+    box-sizing: border-box;
+    width: 100%;
+    border: 4px greenyellow solid;
+    padding: 0.4em;
+    margin-top: 0.4em;
+}
+
+.backButton {
+    border: 1px darkblue;
+    background: cornflowerblue;
+}

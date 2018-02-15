@@ -1,0 +1,11 @@
+.back {
+    background-color: #E46799;
+    border-color: #850035;
+    text-align: center;
+}
+
+.back > .icon {
+    position: relative;
+    top: calc(50% - 1em);
+    transform: scale(2);
+}
