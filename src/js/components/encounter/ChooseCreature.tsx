@@ -4,9 +4,8 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { Creature, CreatureGroup } from '../../models/creatures';
 import { Callback, noBubble } from '../../utils/jsx-props';
+import { Popup, PopupItem } from '../stylish/Popup';
 import { Square } from '../stylish/Square';
-
-import styles from './ChooseCreature.css';
 
 type DisplayTypeProps = { kind: CreatureGroup } & Callback<'onSelect', Creature>;
 
@@ -27,7 +26,7 @@ export class DisplayType extends React.Component<DisplayTypeProps> {
 
     @bind
     @action
-    invertSelector() {
+    invertSelector(): void {
         this.isSelectorOpen = !this.isSelectorOpen;
     }
 
@@ -37,24 +36,16 @@ export class DisplayType extends React.Component<DisplayTypeProps> {
         </Square>;
     }
 
-    renderMany({ kind }: DisplayTypeProps) {
+    renderMany({ kind, onSelect }: DisplayTypeProps) {
         return <Square onClick={this.invertSelector}>
             {kind.name} - {kind.creatures.length} entries
-            {this.renderExtendedSelector(this.props)}
+            <Popup onClose={() => {/* bubble event */}} isOpen={this.isSelectorOpen}>{
+                kind.creatures.map(creature =>
+                    <PopupItem key={creature.name} onClick={noBubble(() => onSelect(creature))}>
+                        {creature.name} - {creature.attributes}
+                    </PopupItem>)
+            }</Popup>
         </Square>;
-    }
-
-    renderExtendedSelector({ kind, onSelect }: DisplayTypeProps) {
-        return <ul className={styles.creatureList}>{
-            this.isSelectorOpen
-                ? [
-                    <li className={styles.backButton} key={'__BACK__'}>🗙</li>,
-                    ...kind.creatures.map((creature) =>
-                        <li key={creature.name} onClick={noBubble(() => onSelect(creature))}>
-                            {creature.name} - {creature.attributes}
-                        </li>)]
-                : []  // empty list
-        }</ul>;
     }
 }
 

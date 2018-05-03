@@ -1,4 +1,4 @@
-.creatureList {
+.popup {
     cursor: pointer;
     position: absolute;
     list-style-type: none;
@@ -10,39 +10,38 @@
     background-color: #4D8C00;
 }
 
-.creatureList li {
+.popup li {
     margin: 0 2px;
     padding: 0.3em;
     border: #4D8C00 solid 2px;
     background-color: #B3EE6B;
 }
 
-.creatureList li.backButton {
+.popup li.backButton {
     width: 1em;
     margin-left: auto;
     background-color: #E46799;
     display: flex;
     align-items: center;
     justify-content: center;
-    /*border-color: #850035;*/
 }
 
-.creatureList li:first-child {
+.popup li:first-child {
     margin-top: 2px;
     border-top-right-radius: 0.4em;
 }
 
-.creatureList li:nth-child(odd) {
+.popup li:nth-child(odd) {
     border-top-left-radius: 0.4em;
     border-bottom-right-radius: 0.4em;
 }
 
-.creatureList li:nth-child(even) {
+.popup li:nth-child(even) {
     border-top-right-radius: 0.4em;
     border-bottom-left-radius: 0.4em;
 }
 
-.creatureList li:last-child {
+.popup li:last-child {
     margin-bottom: 2px;
     border-bottom-left-radius: 0.4em;
     border-bottom-right-radius: 0.4em;
