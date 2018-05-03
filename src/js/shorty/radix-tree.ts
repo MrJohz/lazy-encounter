@@ -44,6 +44,10 @@ export class RadixTree<T> {
         return this._uniqueChars(this.root, key, key, []);
     }
 
+    findByUnique(chars: string[]): T | null {
+        return this._findByUnique(this.root, chars);
+    }
+
     private _add(node: BranchNode<T> | RootNode<T>, originalKey: string, key: string, value: T): void {
 
         // see if we can find a deeper node to match
@@ -174,6 +178,20 @@ export class RadixTree<T> {
         const maybeNode = node.value.get('');
         if (maybeNode) {
             return this._uniqueChars(maybeNode, originalKey, '', [...acc, BLANK]);
+        }
+
+        return null;
+    }
+
+    private _findByUnique(node: Node<T>, chars: string[]): T | null {
+        if (this._isLeaf(node)) {
+            return node.value;
+        }
+
+        for (const [prefix, child] of node.value) {
+            if (prefix === '' && chars[0] === BLANK || chars[0] === prefix[0]) {
+                return this._findByUnique(child, chars.slice(1));
+            }
         }
 
         return null;

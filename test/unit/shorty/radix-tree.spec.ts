@@ -189,3 +189,34 @@ test('tree shrinks when an unnecessary branch can be removed', () => {
     expect(tree.uniqueChars('meals')).toEqual(null);
     expect(tree.uniqueChars('menial')).toEqual(['m']);
 });
+
+test('can find a node from the unique chars', () => {
+    const tree = new RadixTree();
+    tree.add('meals', 'test 1');
+    tree.add('menial', 'test 2');
+    tree.add('denial', 'test 3');
+    tree.add('meningitis', 'test 4');
+
+    expect(tree.findByUnique(['d'])).toBe('test 3');
+    expect(tree.findByUnique(['m', 'a'])).toBe('test 1');
+    expect(tree.findByUnique(['m', 'n', 'a'])).toBe('test 2');
+    expect(tree.findByUnique(['m', 'n', 'n'])).toBe('test 4');
+});
+
+test('can find a node from unique chars with substrings', () => {
+    const tree = new RadixTree();
+    tree.add('meals', 'test 1');
+    tree.add('meal', 'test 2');
+
+    expect(tree.findByUnique(['m', 's'])).toBe('test 1');
+    expect(tree.findByUnique(['m', BLANK])).toBe('test 2');
+});
+
+test('can find a node from unique chars with inverted substrings', () => {
+    const tree = new RadixTree();
+    tree.add('meal', 'test 2');
+    tree.add('meals', 'test 1');
+
+    expect(tree.findByUnique(['m', 's'])).toBe('test 1');
+    expect(tree.findByUnique(['m', BLANK])).toBe('test 2');
+});
