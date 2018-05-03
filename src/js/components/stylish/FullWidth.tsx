@@ -1,12 +1,12 @@
 import React, { MouseEvent } from 'react';
 import classNames from 'classnames';
 
-import { Children, childrenise, Callback, Optional, ClassName, NoArgCallback } from '../../utils/jsx-props';
+import { Children, childrenise, Callback, Optional, ClassName } from '../../utils/jsx-props';
 
 import styles from './FullWidth.css';
 
 type Props = Children
-    & Optional<NoArgCallback<'onBack'>>
+    & Optional<Callback<'onBack'>>
     & Optional<ClassName>
     & Optional<Callback<'onClick', MouseEvent<HTMLDivElement>>>;
 

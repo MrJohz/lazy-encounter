@@ -1,10 +1,10 @@
 import React from 'react';
-import { NoArgCallback } from '../../utils/jsx-props';
+import { Callback } from '../../utils/jsx-props';
 import { Square } from './Square';
 
 import styles from './Back.css';
 
-type Props = NoArgCallback<'onBack'>;
+type Props = Callback<'onBack'>;
 
 export function Back({onBack}: Props) {
     return <Square onClick={onBack} className={styles.back}>

@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react';
 import React from 'react';
 import { Creature } from '../../models/creatures';
-import { NoArgCallback } from '../../utils/jsx-props';
+import { Callback } from '../../utils/jsx-props';
 import { FullWidth } from '../stylish/FullWidth';
 
-type DisplayCreatureProps = { creature: Creature } & NoArgCallback<'onBack'>
+type DisplayCreatureProps = { creature: Creature } & Callback<'onBack'>
 
 @observer
 export class DisplayCreature extends React.Component<DisplayCreatureProps> {

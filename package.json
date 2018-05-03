@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "abortcontroller-polyfill": "^1.0.8",
+    "bind-decorator": "^1.0.11",
     "classnames": "^2.2.5",
     "delay": "^2.0.0",
     "mobx": "^3.5.1",
