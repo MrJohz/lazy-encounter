@@ -5,19 +5,16 @@ import styles from './Popup.css';
 
 export type PopupProps
     = { isOpen: boolean }
-    & Children
-    & Callback<'onClose'>;
+    & Children;
 
-export function Popup({ isOpen, children, onClose }: PopupProps) {
+export function Popup({ isOpen, children }: PopupProps) {
     const childList = childrenise(children);
 
     // TODO: warn or error if invalid child passed
 
     return <ul className={styles.popup}>{
         isOpen
-            ? [
-                <li className={styles.backButton} onClick={onClose} key={'__BACK__'}>🗙</li>,
-                ...childList]
+            ? childList
             : []
     }</ul>;
 }

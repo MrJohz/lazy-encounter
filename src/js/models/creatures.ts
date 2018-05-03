@@ -85,9 +85,11 @@ export function _initCreatures(store: CreatureStore): void {
         ],
     });
 
-    store.addCreatureGroup({
-        name: 'Owlbear', creatures: [creature('Owlbear', 45)],
-    });
+    for (let i = 0; i < 3; i++) {
+        store.addCreatureGroup({
+            name: `Owlbear ${i + 1}`, creatures: [creature('Owlbear', 45)],
+        })
+    }
 
     store.addCreatureGroup({
         name: 'Dragons', creatures: [

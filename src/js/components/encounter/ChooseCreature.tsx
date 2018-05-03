@@ -39,7 +39,7 @@ export class DisplayType extends React.Component<DisplayTypeProps> {
     renderMany({ kind, onSelect }: DisplayTypeProps) {
         return <Square onClick={this.invertSelector}>
             {kind.name} - {kind.creatures.length} entries
-            <Popup onClose={() => {/* bubble event */}} isOpen={this.isSelectorOpen}>{
+            <Popup isOpen={this.isSelectorOpen}>{
                 kind.creatures.map(creature =>
                     <PopupItem key={creature.name} onClick={noBubble(() => onSelect(creature))}>
                         {creature.name} - {creature.attributes}
