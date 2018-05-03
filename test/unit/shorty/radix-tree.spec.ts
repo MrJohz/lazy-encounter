@@ -167,6 +167,15 @@ test('unique chars returns uniquely identifying chars in substring case', () => 
     expect(tree.uniqueChars('meals')).toEqual(['m', 's']);
 });
 
+test('unique chars returns uniquely identifying chars in other substring case', () => {
+    const tree = new RadixTree();
+    tree.add('meals', 'test 2');
+    tree.add('meal', 'test 1');
+
+    expect(tree.uniqueChars('meal')).toEqual(['m', BLANK]);
+    expect(tree.uniqueChars('meals')).toEqual(['m', 's']);
+});
+
 test('tree shrinks when an unnecessary branch can be removed', () => {
     const tree = new RadixTree();
     tree.add('meals', 'test 1');

@@ -20,6 +20,11 @@ type Node<T> = RootNode<T> | BranchNode<T> | LeafNode<T>;
 
 export const BLANK = '';
 
+/**
+ * A lot of this class is a reimplementation of https://gist.github.com/samuelclay/4674630 in TypeScript,
+ * although with a handful of changes where it made sense given my particular needs
+ */
+
 export class RadixTree<T> {
     private root: RootNode<T> = { value: new Map() } as RootNode<T>;
 
