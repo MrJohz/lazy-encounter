@@ -214,4 +214,22 @@ describe('Shorty', () => {
         });
 
     });
+
+    describe('removeShortcut', () => {
+
+        it('should prevent a shortcut from being called', () => {
+            const shorty = new Shorty();
+            const shortcut = shorty.addShortcut('hello');
+
+            const beginSpy = spy();
+            shortcut.on('keys:start', beginSpy);
+
+            shorty.removeShortcut(shortcut);
+            shorty.onKeypress('h');
+
+            expect(beginSpy.callCount).to.equal(0);
+        });
+
+    });
+
 });

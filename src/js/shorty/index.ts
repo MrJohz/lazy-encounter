@@ -56,7 +56,7 @@ export class Shorty {
         const handleId = handleList.indexOf(handle);
 
         handleList.splice(handleId, 1);
-        this.shortcuts.remove(lcName + handleId);
+        this.shortcuts.remove(lcName + (handleId + 1));
     }
 
     onKeypress(key: string): void {
