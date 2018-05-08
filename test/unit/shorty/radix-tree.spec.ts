@@ -251,4 +251,25 @@ describe('RadixTree', () => {
 
     });
 
+    describe('startsWithUnique', () => {
+
+        it('should return all children that start with a particular unique char set', () => {
+            const tree = new RadixTree();
+            tree.add('meals', 'test 1');
+            tree.add('meal', 'test 2');
+            tree.add('men', 'test 3');
+
+            expect(tree.startsWithUnique(['m', 'a', 's'])).to.be.a.permutationOf(['test 1']);
+            expect(tree.startsWithUnique(['m', 'a'])).to.be.a.permutationOf(['test 1', 'test 2']);
+            expect(tree.startsWithUnique(['m'])).to.be.a.permutationOf(['test 1', 'test 2', 'test 3']);
+        });
+
+        it('should return an empty list if no char set is found', () => {
+            const tree = new RadixTree();
+
+            expect(tree.startsWithUnique(['m'])).to.eql([]);
+        })
+
+    });
+
 });

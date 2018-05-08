@@ -48,6 +48,10 @@ export class RadixTree<T> {
         return this._findByUnique(this.root, chars);
     }
 
+    startsWithUnique(chars: string[]): T[] {
+        return this._startsWithUnique(this.root, chars);
+    }
+
     private _add(node: BranchNode<T> | RootNode<T>, originalKey: string, key: string, value: T): void {
 
         // see if we can find a deeper node to match
@@ -195,6 +199,37 @@ export class RadixTree<T> {
         }
 
         return null;
+    }
+
+    private _startsWithUnique(node: Node<T>, chars: string[]): T[] {
+        if (chars.length === 0) {
+            return this._getAllChildren(node);
+        }
+
+        if (this._isLeaf(node)) {
+            return [node.value];
+        }
+
+        for (const [prefix, child] of node.value) {
+            if (prefix === '' && chars[0] === BLANK || chars[0] === prefix[0]) {
+                return this._startsWithUnique(child, chars.slice(1));
+            }
+        }
+
+        return [];
+    }
+
+    private _getAllChildren(node: Node<T>): T[] {
+        if (this._isLeaf(node)) {
+            return [node.value];
+        } else {
+            const children = [];
+            for (const [_, child] of node.value.entries()) {
+                children.push(...this._getAllChildren(child))
+            }
+
+            return children;
+        }
     }
 
     private _isRoot(node: Node<T>): node is RootNode<T> {
