@@ -1,5 +1,5 @@
 import React from 'react';
-import { Callback, Children, childrenise } from '../../utils/jsx-props';
+import { Children, childrenise } from '../../utils/jsx-props';
 
 import styles from './Popup.css';
 
