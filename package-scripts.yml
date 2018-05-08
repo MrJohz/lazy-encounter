@@ -10,4 +10,15 @@ scripts:
       default: 'webpack --config webpack.config.js'
       watch: 'webpack --config webpack.config.js --watch'
 
+  test:
+    default: '
+    cross-env TS_NODE_PROJECT=test/tsconfig.json
+      mocha -r ts-node/register test/**/*.spec.ts
+    '
+    coverage: '
+    cross-env TS_NODE_PROJECT=test/tsconfig.json
+    nyc
+      mocha -r ts-node/register test/**/*.spec.ts
+    '
+
   dev-server: 'http-server ./dist/ -o -c-1 --silent'

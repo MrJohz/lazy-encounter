@@ -206,8 +206,9 @@ export class RadixTree<T> {
             return this._getAllChildren(node);
         }
 
+        /* istanbul ignore if: this should never be called */
         if (this._isLeaf(node)) {
-            return [node.value];
+            throw new Error(`Leaf node found in a place it should not be`);
         }
 
         for (const [prefix, child] of node.value) {
