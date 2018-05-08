@@ -4,3 +4,4 @@ dist/
 *.iml
 
 /yarn-error.log
+/coverage/
