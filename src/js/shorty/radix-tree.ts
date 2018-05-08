@@ -102,7 +102,7 @@ export class RadixTree<T> {
             return;
         }
 
-        node.value.set(key, { parent: node, name: key, value: value } as LeafNode<T>);
+        node.value.set(key, { parent: node, name: originalKey, value: value } as LeafNode<T>);
     }
 
     private _get(node: Node<T>, originalKey: string, key: string): T | null {
