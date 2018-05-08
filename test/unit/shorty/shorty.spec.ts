@@ -1,4 +1,4 @@
-import { Shorty, ShortcutHandle } from '../../../src/js/shorty';
+import { Shorty, ShortcutHandle, ESCAPE } from '../../../src/js/shorty';
 
 import expect from 'must';
 import { spy } from 'sinon';
@@ -205,7 +205,7 @@ describe('Shorty', () => {
             sc2.on('keys:start', sc2StartSpy);
 
             shorty.onKeypress('h');
-            shorty.onKeypress('<esc>');
+            shorty.onKeypress(ESCAPE);
             shorty.onKeypress('g');
 
             expect(sc1StartSpy.callCount).to.equal(1);

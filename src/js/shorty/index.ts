@@ -1,6 +1,8 @@
 import { RadixTree } from './radix-tree';
 import EventEmitter from 'eventemitter3';
 
+export const ESCAPE = String.fromCharCode(27);
+
 export class ShortcutHandle {
     private ee: EventEmitter = new EventEmitter();
     public keys: string[] = [];
@@ -60,7 +62,7 @@ export class Shorty {
     }
 
     onKeypress(key: string): void {
-        if (key === '<esc>') {
+        if (key === ESCAPE) {
             for (const shortcut of this.activeShortcuts) {
                 shortcut['emit']('keys:discontinue');
             }
