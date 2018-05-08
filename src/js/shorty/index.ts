@@ -1,7 +1,8 @@
-import { RadixTree } from './radix-tree';
 import EventEmitter from 'eventemitter3';
 
-export const ESCAPE = String.fromCharCode(27);
+import { Adaptor, DocumentAdaptor } from './adaptors';
+import { ESCAPE } from './constants';
+import { RadixTree } from './radix-tree';
 
 export class ShortcutHandle {
     private ee: EventEmitter = new EventEmitter();
@@ -40,6 +41,12 @@ export class Shorty {
     private handles: Map<string, ShortcutHandle[]> = new Map();
     private activeKeypresses: string[] = [];
     private activeShortcuts: ShortcutHandle[] = [];
+    private adaptor: Adaptor;
+
+    constructor(adaptor?: Adaptor) {
+        this.adaptor = adaptor || new DocumentAdaptor(document);
+        this.adaptor.register((key: string) => this.onKeypress(key));
+    }
 
     addShortcut(name: string): ShortcutHandle {
         const handle = new ShortcutHandle(name);
@@ -61,7 +68,7 @@ export class Shorty {
         this.shortcuts.remove(lcName + (handleId + 1));
     }
 
-    onKeypress(key: string): void {
+    private onKeypress(key: string): void {
         if (key === ESCAPE) {
             for (const shortcut of this.activeShortcuts) {
                 shortcut['emit']('keys:discontinue');
