@@ -36,6 +36,8 @@ export class ShortcutHandle {
 export class Shorty {
     private shortcuts: RadixTree<ShortcutHandle> = new RadixTree();
     private handles: Map<string, ShortcutHandle[]> = new Map();
+    private activeKeypresses: string[] = [];
+    private activeShortcuts: ShortcutHandle[] = [];
 
     addShortcut(name: string): ShortcutHandle {
         const handle = new ShortcutHandle(name);
@@ -55,6 +57,43 @@ export class Shorty {
 
         handleList.splice(handleId, 1);
         this.shortcuts.remove(lcName + handleId);
+    }
+
+    onKeypress(key: string): void {
+        if (key === '<esc>') {
+            for (const shortcut of this.activeShortcuts) {
+                shortcut['emit']('keys:discontinue');
+            }
+            this.activeShortcuts = [];
+            this.activeKeypresses = [];
+        }
+
+        this.activeKeypresses.push(key);
+        const newShortcuts = this.shortcuts.startsWithUnique(this.activeKeypresses);
+        if (this.activeKeypresses.length === 1) {  // first key press
+            for (const shortcut of newShortcuts) {
+                shortcut['emit']('keys:start', this.activeKeypresses);
+            }
+        } else {
+            for (const shortcut of this.activeShortcuts) {
+                if (newShortcuts.indexOf(shortcut) > -1) {
+                    shortcut['emit']('keys:continue', this.activeKeypresses);
+                } else {
+                    shortcut['emit']('keys:discontinue');
+                }
+            }
+        }
+
+        if (newShortcuts.length === 1) {
+            newShortcuts[0]['emit']('keys:end');
+            this.activeKeypresses = [];
+            this.activeShortcuts = [];
+        } else if (newShortcuts.length === 0) {
+            this.activeKeypresses = [];
+            this.activeShortcuts = [];
+        } else {
+            this.activeShortcuts = newShortcuts;
+        }
     }
 
     private _getHandleList(name: string): ShortcutHandle[] {
