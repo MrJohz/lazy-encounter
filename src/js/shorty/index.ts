@@ -48,11 +48,14 @@ export class Shorty {
         return handle;
     }
 
-    // removeShortcut(id: ShortcutHandle): void {
-    //     const x = new ShortcutHandle(new EventEmitter(), 'test', ['m']);
-    //     x.on('keys:continue', (name: string[]) => {
-    //     });
-    // }
+    removeShortcut(handle: ShortcutHandle): void {
+        const lcName = handle['name'].toLowerCase();
+        const handleList = this._getHandleList(lcName);
+        const handleId = handleList.indexOf(handle);
+
+        handleList.splice(handleId, 1);
+        this.shortcuts.remove(lcName + handleId);
+    }
 
     private _getHandleList(name: string): ShortcutHandle[] {
         const handleList = this.handles.get(name);
