@@ -29,6 +29,7 @@ export class FiniteStateMachine<T> {
                 // but we don't want to wrap entire transition function
                 // in an action, because a transition doesn't always
                 // happen (i.e. if callback passed)
+                // hence - IIFE magic
                 this.state = argument;
             }));
         }

@@ -17,9 +17,9 @@ export function childrenise<T = ReactNode>(children?: T | T[]): T[] | null {
 export type ClassName = { className: string };
 export type Optional<Prop> = { [key in keyof Prop]?: Prop[key] };
 
-type EventCallback<T> = (ev: SyntheticEvent<T>) => void
+type EventCallback<T, U> = (ev: SyntheticEvent<T>) => U
 
-export function noBubble<T>(cb: EventCallback<T>): EventCallback<T> {
+export function noBubble<T, U>(cb: EventCallback<T, U>): EventCallback<T, U> {
     return (ev: SyntheticEvent<T>) => {
         ev.stopPropagation();
         return cb(ev);
