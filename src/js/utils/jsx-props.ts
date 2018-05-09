@@ -4,8 +4,10 @@ export type Children<T = ReactNode> = Child<T> | ManyChildren<T>;
 export type Child<T = ReactNode> = { children: T };
 export type ManyChildren<T = ReactNode> = { children: T[] };
 
-export function childrenise<T = ReactNode>(children: T | T[]): T[] {
-    if (!Array.isArray(children)) {
+export function childrenise<T = ReactNode>(children?: T | T[]): T[] | null {
+    if (typeof children === 'undefined' || children === null) {
+        return null;
+    } else if (!Array.isArray(children)) {
         return [children];
     } else {
         return children;

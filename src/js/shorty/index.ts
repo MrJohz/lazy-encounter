@@ -77,6 +77,15 @@ export class Shorty {
         this.shortcuts.remove(shortcutId + (handleId + 1));
     }
 
+    get shortcutCount(): number {
+        let count = 0;
+        for (const [_, handles] of this.handles) {
+            count += handles.length;
+        }
+
+        return count;
+    }
+
     private onKeypress(key: string): void {
         if (key === ESCAPE) {
             for (const shortcut of this.activeShortcuts) {
@@ -134,7 +143,10 @@ export class Shorty {
             for (const [idx, handle] of handleList.entries()) {
                 const shortcutId = createId(key, idx + 1);
                 const chars = this.shortcuts.uniqueChars(shortcutId);
+
+                /* istanbul ignore if: something must have gone severely wrong somewhere */
                 if (!chars) throw new Error(`invalid state - cannot find handle for '${handle['name']}' (as '${shortcutId}')`);
+
                 handle['emit']('shortcut:change', chars.map(x => x || '.'));  // replace empty character with period
             }
         }
