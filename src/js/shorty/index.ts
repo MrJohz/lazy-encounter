@@ -36,6 +36,13 @@ export class ShortcutHandle {
     }
 }
 
+function createId(name: string, id?: number): string {
+    return name
+            .toLowerCase()
+            .replace(/\./, '')
+        + (typeof id === 'undefined' ? '' : '' + id);
+}
+
 export class Shorty {
     private shortcuts: RadixTree<ShortcutHandle> = new RadixTree();
     private handles: Map<string, ShortcutHandle[]> = new Map();
@@ -50,22 +57,22 @@ export class Shorty {
 
     addShortcut(name: string): ShortcutHandle {
         const handle = new ShortcutHandle(name);
-        const lcName = name.toLowerCase();
-        const handleList = this._getHandleList(lcName);
+        const shortcutId = createId(name);
+        const handleList = this._getHandleList(shortcutId);
         handleList.push(handle);
-        this.shortcuts.add(lcName + handleList.length, handle);
+        this.shortcuts.add(shortcutId + handleList.length, handle);
 
         this._updateHandles();
         return handle;
     }
 
     removeShortcut(handle: ShortcutHandle): void {
-        const lcName = handle['name'].toLowerCase();
-        const handleList = this._getHandleList(lcName);
+        const shortcutId = createId(handle['name']);
+        const handleList = this._getHandleList(shortcutId);
         const handleId = handleList.indexOf(handle);
 
         handleList.splice(handleId, 1);
-        this.shortcuts.remove(lcName + (handleId + 1));
+        this.shortcuts.remove(shortcutId + (handleId + 1));
     }
 
     private onKeypress(key: string): void {
@@ -75,6 +82,10 @@ export class Shorty {
             }
             this.activeShortcuts = [];
             this.activeKeypresses = [];
+        }
+
+        if (key === '.') {
+            key = '';  // use period as end key
         }
 
         this.activeKeypresses.push(key);
@@ -119,9 +130,10 @@ export class Shorty {
     private _updateHandles() {
         for (const [key, handleList] of this.handles) {
             for (const [idx, handle] of handleList.entries()) {
-                const chars = this.shortcuts.uniqueChars(key + (idx + 1));
-                if (!chars) throw new Error(`invalid state - cannot find handle for '${handle['name']}' (as '${key + (idx + 1)}')`);
-                handle['emit']('shortcut:change', chars);
+                const shortcutId = createId(key, idx + 1);
+                const chars = this.shortcuts.uniqueChars(shortcutId);
+                if (!chars) throw new Error(`invalid state - cannot find handle for '${handle['name']}' (as '${shortcutId}')`);
+                handle['emit']('shortcut:change', chars.map(x => x || '.'));  // replace empty character with period
             }
         }
     }

@@ -1,7 +1,7 @@
 import { Shorty, ShortcutHandle } from '../../../src/js/shorty';
 
 import expect from 'must';
-import { spy } from 'sinon';
+import { spy, assert } from 'sinon';
 import { TestAdaptor } from '../../../src/js/shorty/adaptors';
 
 describe('Shorty', () => {
@@ -41,6 +41,22 @@ describe('Shorty', () => {
 
             expect(sc3['name']).to.eql('HELLO');
             expect(sc3.keys).to.eql(['h', '3']);
+        });
+
+        it('should handle the case of substrings by inserting extra period characters', () => {
+            const sc1 = shorty.addShortcut('hello');
+            const sc2 = shorty.addShortcut('hello1');
+
+            expect(sc1.keys).to.eql(['h', '.']);
+            expect(sc2.keys).to.eql(['h', '1']);
+        });
+
+        it('should strip periods from a shortcut', () => {
+            const sc1 = shorty.addShortcut('h.ello');
+            const sc2 = shorty.addShortcut('hallo');
+
+            expect(sc1.keys).to.eql(['h', 'e']);
+            expect(sc2.keys).to.eql(['h', 'a']);
         });
 
     });
@@ -202,6 +218,51 @@ describe('Shorty', () => {
             expect(sc1StartSpy.callCount).to.equal(1);
             expect(sc1DiscontinueSpy.callCount).to.equal(1);
             expect(sc2StartSpy.callCount).to.equal(1);
+        });
+
+        it('should handle the case of substrings by inserting extra period characters', () => {
+            const sc1 = shorty.addShortcut('hello');
+            const sc2 = shorty.addShortcut('hello1');
+
+            const sc1EndSpy = spy();
+            const sc2EndSpy = spy();
+
+            sc1.on('keys:end', sc1EndSpy);
+            sc2.on('keys:end', sc2EndSpy);
+
+            adaptor.send('h', '.');
+
+            assert.callCount(sc1EndSpy, 1);
+            assert.callCount(sc2EndSpy, 0);
+        });
+
+        it('should strip periods from a shortcut', () => {
+            const sc1 = shorty.addShortcut('h.ello');
+            const sc2 = shorty.addShortcut('hallo');
+
+            const sc1DiscontinueSpy = spy();
+            const sc1EndSpy = spy();
+            const sc2EndSpy = spy();
+
+            sc1.on('keys:discontinue', sc1DiscontinueSpy);
+            sc1.on('keys:end', sc1EndSpy);
+            sc2.on('keys:end', sc2EndSpy);
+
+            adaptor.send('h', '.');
+
+            assert.callCount(sc1DiscontinueSpy, 1);
+            assert.callCount(sc1EndSpy, 0);
+            assert.callCount(sc2EndSpy, 0);
+
+            sc1DiscontinueSpy.resetHistory();
+            sc1EndSpy.resetHistory();
+            sc2EndSpy.resetHistory();
+
+            adaptor.send('h', 'e');
+
+            assert.callCount(sc1DiscontinueSpy, 0);
+            assert.callCount(sc1EndSpy, 1);
+            assert.callCount(sc2EndSpy, 0);
         });
 
     });
