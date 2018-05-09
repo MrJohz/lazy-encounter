@@ -1,0 +1,7 @@
+--ui bdd
+
+--require ts-node/register
+--require ./test/unit/enzyme.setup.js
+
+test/**/*.spec.ts
+test/**/*.spec.tsx

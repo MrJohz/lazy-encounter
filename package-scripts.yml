@@ -13,12 +13,11 @@ scripts:
   test:
     default: '
     cross-env TS_NODE_PROJECT=test/tsconfig.json
-      mocha -r ts-node/register test/**/*.spec.ts
+      mocha
     '
     coverage: '
     cross-env TS_NODE_PROJECT=test/tsconfig.json
-    nyc
-      mocha -r ts-node/register test/**/*.spec.ts
+      nyc mocha
     '
 
   dev-server: 'http-server ./dist/ -o -c-1 --silent'

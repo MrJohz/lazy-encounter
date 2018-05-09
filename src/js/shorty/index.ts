@@ -4,6 +4,8 @@ import { Adaptor, DocumentAdaptor } from './adaptors';
 import { ESCAPE } from './constants';
 import { RadixTree } from './radix-tree';
 
+export { DocumentAdaptor, DOMElementAdaptor } from './adaptors';
+
 export class ShortcutHandle {
     private ee: EventEmitter = new EventEmitter();
     public keys: string[] = [];

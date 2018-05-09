@@ -13,6 +13,7 @@
   "devDependencies": {
     "@types/classnames": "^2.2.0",
     "@types/delay": "^2.0.1",
+    "@types/enzyme": "^3.1.10",
     "@types/eventemitter3": "^2.0.2",
     "@types/jsdom": "^11.0.4",
     "@types/mocha": "^5.2.0",
@@ -26,6 +27,8 @@
     "copyfiles": "^1.2.0",
     "cross-env": "^5.1.4",
     "css-loader": "^0.28.4",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "extract-text-webpack-plugin": "^3.0.2",
     "html-webpack-plugin": "^2.30.1",
     "http-server": "^0.11.1",

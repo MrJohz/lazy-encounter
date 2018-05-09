@@ -57,6 +57,10 @@ describe('DOMElementAdaptor', () => {
         element = jsdom.window.document.getElementById('test') as HTMLElement;
     });
 
+    afterEach(() => {
+        jsdom.window.close();
+    });
+
     it('fires when a keydown event is fired', () => {
         const registerSpy = spy();
 
@@ -161,6 +165,10 @@ describe('DocumentAdaptor', () => {
         jsdom = new JSDOM('');
     });
 
+    afterEach(() => {
+        jsdom.window.close();
+    });
+
     it('fires when a keydown event is fired', () => {
         const registerSpy = spy();
 
@@ -219,7 +227,7 @@ describe('DocumentAdaptor', () => {
 
         assert.callCount(registerSpy, 0);
 
-        delete (global as any)['window']
+        delete (global as any)['window'];
     });
 
 });
