@@ -11,7 +11,7 @@ const {
 
 export type ShortyProviderProps
     = { global?: boolean, adaptor?: Adaptor }
-    & Children;
+    & Optional<Children>;
 
 export type ShortyProviderState
     = { shorty: Shorty | null };
@@ -32,7 +32,7 @@ export class ShortyProvider extends React.Component<ShortyProviderProps, ShortyP
     }
 
     shortyInstance(): Shorty | null {
-        return this.state.shorty
+        return this.state.shorty;
     }
 
     componentDidMount() {
@@ -59,24 +59,27 @@ export class ShortyProvider extends React.Component<ShortyProviderProps, ShortyP
 }
 
 type ShortcutImplProps
-    = { shortcutText: string, shorty: Shorty }
+    = { shortcutText: string, shorty: Shorty, onTrigger: () => void }
     & Optional<Children>;
 
 class ShortcutImpl extends React.Component<ShortcutImplProps> {
 
     private readonly shorty: Shorty;
     private readonly shortcutText: string;
+    private onTrigger: () => void;
     private shortcut!: ShortcutHandle;
 
     constructor(props: ShortcutImplProps) {
         super(props);
 
+        this.onTrigger = this.props.onTrigger;
         this.shorty = this.props.shorty;
         this.shortcutText = this.props.shortcutText;
     }
 
     componentDidMount() {
         this.shortcut = this.shorty.addShortcut(this.shortcutText);
+        this.shortcut.on('keys:end', this.onTrigger);
     }
 
     componentWillUnmount() {
@@ -90,17 +93,17 @@ class ShortcutImpl extends React.Component<ShortcutImplProps> {
 }
 
 export type ShortcutProps
-    = { shortcut: string }
+    = { shortcut: string, onTrigger: () => void }
     & Optional<Children>;
 
-export function Shortcut({ shortcut, children }: ShortcutProps) {
+export function Shortcut({ onTrigger, shortcut, children }: ShortcutProps) {
     children = childrenise(children);
     const renderWithShorty = (shorty: Shorty | null) => {
         if (!shorty) {
             return children;  // return children for now while we're still setting up the shorty instance
         }
 
-        return <ShortcutImpl shortcutText={shortcut} shorty={shorty} children={children}/>;
+        return <ShortcutImpl onTrigger={onTrigger} shortcutText={shortcut} shorty={shorty} children={children}/>;
     };
 
     return <ShortyContextConsumer children={renderWithShorty}/>;
