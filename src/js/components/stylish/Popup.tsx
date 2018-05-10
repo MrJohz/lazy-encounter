@@ -22,8 +22,6 @@ export function Popup({ isOpen, children }: PopupProps) {
 export type PopupItemProps
     = React.DetailedHTMLProps<React.LiHTMLAttributes<HTMLLIElement>, HTMLLIElement>;
 
-export class PopupItem extends React.PureComponent<PopupItemProps> {
-    render() {
-        return <li {...this.props}/>;
-    }
+export function PopupItem(props: PopupItemProps) {
+    return <li {...props} />
 }
