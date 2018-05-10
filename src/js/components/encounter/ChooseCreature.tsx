@@ -11,15 +11,6 @@ type DisplayTypeProps = { kind: CreatureGroup } & Callback<'onSelect', Creature>
 
 @observer
 export class DisplayType extends React.Component<DisplayTypeProps> {
-    render() {
-        const { kind } = this.props;
-        switch (kind.creatures.length) {
-            case 1:
-                return this.renderSingle(this.props);
-            default:
-                return this.renderMany(this.props);
-        }
-    }
 
     @observable
     isSelectorOpen = false;
@@ -28,6 +19,15 @@ export class DisplayType extends React.Component<DisplayTypeProps> {
     @action
     invertSelector(): void {
         this.isSelectorOpen = !this.isSelectorOpen;
+    }
+    render() {
+        const { kind } = this.props;
+        switch (kind.creatures.length) {
+            case 1:
+                return this.renderSingle(this.props);
+            default:
+                return this.renderMany(this.props);
+        }
     }
 
     renderSingle({ kind, onSelect }: DisplayTypeProps) {
@@ -52,6 +52,9 @@ export class DisplayType extends React.Component<DisplayTypeProps> {
 type SelectInstanceProps
     = { creatures: CreatureGroup[] }
     & Callback<'onSelect', Creature>;
+
+// TODO: move 'open'/click functionality into this parent class
+// this way we can ensure that only one child menu is open at a time
 
 @observer
 export class ChooseCreature extends React.Component<SelectInstanceProps> {
