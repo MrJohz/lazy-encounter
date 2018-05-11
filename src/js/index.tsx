@@ -1,5 +1,5 @@
-import { useStrict } from 'mobx';
-useStrict(true);
+import { configure } from 'mobx';
+configure({ enforceActions: true });
 
 import React from 'react';
 import ReactDOM from 'react-dom';

@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, observable, runInAction } from 'mobx';
 
 type NoArgCB<T> = () => T;
 type ArgCB<U, T> = (arg: U) => T;
@@ -24,14 +24,9 @@ export class FiniteStateMachine<T> {
                 this.state = argument(arg);
             });
         } else {
-            iife(action(() => {
-                // need to wrap state change in an action
-                // but we don't want to wrap entire transition function
-                // in an action, because a transition doesn't always
-                // happen (i.e. if callback passed)
-                // hence - IIFE magic
+            runInAction(() => {
                 this.state = argument;
-            }));
+            });
         }
     }
 
