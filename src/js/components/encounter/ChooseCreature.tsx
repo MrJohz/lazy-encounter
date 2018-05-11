@@ -2,6 +2,7 @@ import bind from 'bind-decorator';
 import { observer } from 'mobx-react';
 import React from 'react';
 import { Creature, CreatureGroup } from '../../models/creatures';
+import { Shortcut } from '../../shorty/react';
 import { Callback, noBubble } from '../../utils/jsx-props';
 import { OneItem, OneItemInstance } from '../../utils/one-at-a-time';
 import { Popup, PopupItem } from '../stylish/Popup';
@@ -29,19 +30,25 @@ export class DisplayType extends React.Component<DisplayTypeProps> {
 
     renderSingle({ kind, onSelect }: DisplayTypeProps) {
         return <Square onClick={() => onSelect(kind.creatures[0])}>
-            {kind.name} - {kind.creatures[0].attributes}
+            <Shortcut shortcut={kind.name} onTrigger={() => onSelect(kind.creatures[0])}>
+                {kind.name} - {kind.creatures[0].attributes}
+            </Shortcut>
         </Square>;
     }
 
     renderMany({ kind, onSelect, oneItemChild }: DisplayTypeProps) {
         return <Square onClick={this.invertSelector}>
-            {kind.name} - {kind.creatures.length} entries
-            <Popup isOpen={oneItemChild.state()}>{
-                kind.creatures.map(creature =>
-                    <PopupItem key={creature.name} onClick={noBubble(() => onSelect(creature))}>
-                        {creature.name} - {creature.attributes}
-                    </PopupItem>)
-            }</Popup>
+            <Shortcut shortcut={kind.name} onTrigger={this.invertSelector}>
+                {kind.name} - {kind.creatures.length} entries
+                <Popup isOpen={oneItemChild.state()}>{
+                    kind.creatures.map(creature =>
+                        <PopupItem key={creature.name} onClick={noBubble(() => onSelect(creature))}>
+                            <Shortcut shortcut={creature.name} onTrigger={() => onSelect(creature)}>
+                                {creature.name} - {creature.attributes}
+                            </Shortcut>
+                        </PopupItem>)
+                }</Popup>
+            </Shortcut>
         </Square>;
     }
 }
