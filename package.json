@@ -8,7 +8,8 @@
   "scripts": {
     "test": "nps test",
     "coverage": "nps test.coverage",
-    "develop": "nps default"
+    "develop": "nps start",
+    "build": "nps build.production"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.0",
