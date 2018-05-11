@@ -1,23 +1,18 @@
 scripts:
-  default: 'nps build && concurrently --raw "nps build.watch" "nps dev-server"'
-  build:
-    default: 'nps build.bundle'
-    watch: 'concurrently --kill-others-on-fail --names "BUNDL" -c "bgBlue.bold"
-      "nps build.bundle.watch"
-    '
+  start: &serve
+    default: 'webpack-serve --config webpack.dev.config'
 
-    bundle:
-      default: 'webpack --config webpack.config.js'
-      watch: 'webpack --config webpack.config.js --watch'
+  build:
+    <<: *serve  # alias build.default to start.default
+    development: 'webpack --config webpack.dev.config'
+    production: 'webpack --config webpack.prod.config'
 
   test:
-    default: '
-    cross-env TS_NODE_PROJECT=test/tsconfig.json
+    default: 'cross-env
+      TS_NODE_PROJECT=test/tsconfig.json
       mocha
     '
-    coverage: '
-    cross-env TS_NODE_PROJECT=test/tsconfig.json
+    coverage: 'cross-env
+      TS_NODE_PROJECT=test/tsconfig.json
       nyc mocha
     '
-
-  dev-server: 'http-server ./dist/ -o -c-1 --silent'
