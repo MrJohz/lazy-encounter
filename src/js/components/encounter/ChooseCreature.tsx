@@ -1,25 +1,22 @@
 import bind from 'bind-decorator';
-import { observable, action } from 'mobx';
-import React from 'react';
 import { observer } from 'mobx-react';
+import React from 'react';
 import { Creature, CreatureGroup } from '../../models/creatures';
 import { Callback, noBubble } from '../../utils/jsx-props';
+import { OneItem, OneItemInstance } from '../../utils/one-at-a-time';
 import { Popup, PopupItem } from '../stylish/Popup';
 import { Square } from '../stylish/Square';
 
-type DisplayTypeProps = { kind: CreatureGroup } & Callback<'onSelect', Creature>;
+type DisplayTypeProps = { kind: CreatureGroup, oneItemChild: OneItemInstance<string> } & Callback<'onSelect', Creature>;
 
 @observer
 export class DisplayType extends React.Component<DisplayTypeProps> {
 
-    @observable
-    isSelectorOpen = false;
-
     @bind
-    @action
     invertSelector(): void {
-        this.isSelectorOpen = !this.isSelectorOpen;
+        this.props.oneItemChild.invert();
     }
+
     render() {
         const { kind } = this.props;
         switch (kind.creatures.length) {
@@ -36,10 +33,10 @@ export class DisplayType extends React.Component<DisplayTypeProps> {
         </Square>;
     }
 
-    renderMany({ kind, onSelect }: DisplayTypeProps) {
+    renderMany({ kind, onSelect, oneItemChild }: DisplayTypeProps) {
         return <Square onClick={this.invertSelector}>
             {kind.name} - {kind.creatures.length} entries
-            <Popup isOpen={this.isSelectorOpen}>{
+            <Popup isOpen={oneItemChild.state()}>{
                 kind.creatures.map(creature =>
                     <PopupItem key={creature.name} onClick={noBubble(() => onSelect(creature))}>
                         {creature.name} - {creature.attributes}
@@ -58,9 +55,15 @@ type SelectInstanceProps
 
 @observer
 export class ChooseCreature extends React.Component<SelectInstanceProps> {
+
+    oneItemParent = new OneItem<string>();
+
     render() {
         const { creatures, onSelect } = this.props;
         return creatures.map(creatureGroup =>
-            <DisplayType key={creatureGroup.name} kind={creatureGroup} onSelect={onSelect}/>);
+            <DisplayType key={creatureGroup.name}
+                         kind={creatureGroup}
+                         onSelect={onSelect}
+                         oneItemChild={this.oneItemParent.instance(creatureGroup.name)}/>);
     }
 }
