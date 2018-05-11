@@ -3,10 +3,6 @@ import { action, observable, runInAction } from 'mobx';
 type NoArgCB<T> = () => T;
 type ArgCB<U, T> = (arg: U) => T;
 
-function iife<T>(func: () => T): T {
-    return func();
-}
-
 export class FiniteStateMachine<T> {
     @observable
     public state: T;

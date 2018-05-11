@@ -28,8 +28,8 @@ export const BLANK = '';
 export class RadixTree<T> {
     private root: RootNode<T> = { value: new Map() } as RootNode<T>;
 
-    add(text: string, value: T) {
-        return this._add(this.root, text, text, value);
+    add(key: string, value: T) {
+        this._add(this.root, key, key, value);
     }
 
     get(key: string): T | null {
@@ -139,15 +139,41 @@ export class RadixTree<T> {
         for (const [prefix, child] of node.value) {
             if (key.substr(0, prefix.length) === prefix) {
                 if (this._isLeaf(child)) {
+
+                    // this is a mess
+                    // TODO: at some distant point, I should definitely try and clean this up
+                    // TODO: at some even more distant point, I should rewrite this file
+
+                    // basically, we've found a node that's a child of this one, that we believe matches the node
+                    // that needs to be deleted
+                    // so we delete it
+                    // then we need to shrink the tree to ensure that the radix tree is still as compact as always
+                    // so we look to see if this node has only one child
+                    // because if that's the case we're going to need to shrink
+                    // if that's the case, we convert this current node *in-place* (WTF? Why?)
+                    // into the child node, and update the parent node *in-place* (again - WTF? Why?)
+                    // so that it references this node with the correct name
+
                     node.value.delete(prefix);
 
-
                     if (node.value.size === 1 && !this._isRoot(node)) {
-                        const otherChild = Array.from(node.value.entries())[0][1];  // get the other child of this node
+                        const [childKey, otherChild] = Array.from(node.value.entries())[0];  // get the other child of this node
 
-                        (node as any).name = (otherChild as any).name;  // hacky conversion into a leaf node
+                        let newKey = '';
+                        let parentKey = '';
+                        for (const [pk, child] of node.parent.value.entries()) {
+                            if (child === node) {
+                                parentKey = pk;
+                                newKey = pk + childKey;
+                            }
+                        }
+
+                        if (this._isLeaf(otherChild)) {
+                            (node as any).name = otherChild.name;
+                        }
                         (node as any).value = otherChild.value;
-                        node.parent.value.set(key, node);
+                        node.parent.value.delete(parentKey);
+                        node.parent.value.set(newKey, node);
                     }
 
                     return true;
@@ -226,7 +252,7 @@ export class RadixTree<T> {
         } else {
             const children = [];
             for (const [_, child] of node.value.entries()) {
-                children.push(...this._getAllChildren(child))
+                children.push(...this._getAllChildren(child));
             }
 
             return children;

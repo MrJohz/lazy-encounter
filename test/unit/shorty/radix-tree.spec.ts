@@ -143,6 +143,30 @@ describe('RadixTree', () => {
             expect(tree.get('meal')).to.equal('test 2');
         });
 
+        it('should remove nodes even when goblins are involved', () => {
+            const tree = new RadixTree();
+            tree.add('goblins1', 'test');
+
+            tree.add('goblin101', 'test');
+            tree.add('goblin111', 'test');
+
+            tree.remove('goblin101');
+            tree.remove('goblin111');
+
+            expect(tree.startsWithUnique(['g'])).to.be.permutationOf(['test']);
+        });
+
+        it('should remove nodes even when goblins are involved (v2)', () => {
+            const tree = new RadixTree();
+            tree.add('goblin101', 'test');
+            tree.add('goblin111', 'test');
+
+            tree.remove('goblin101');
+            tree.remove('goblin111');
+
+            expect(tree.startsWithUnique(['g'])).to.be.permutationOf([]);
+        });
+
     });
 
     describe('uniqueChars', () => {
@@ -268,7 +292,7 @@ describe('RadixTree', () => {
             const tree = new RadixTree();
 
             expect(tree.startsWithUnique(['m'])).to.eql([]);
-        })
+        });
 
     });
 
