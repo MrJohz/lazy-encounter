@@ -19,9 +19,11 @@
     "@types/mocha": "^5.2.0",
     "@types/react": "^16.0.25",
     "@types/react-dom": "^16.0.3",
+    "@types/react-router-dom": "^4.2.6",
     "@types/sinon": "^4.3.1",
     "awesome-typescript-loader": "^5.0.0",
     "clean-webpack-plugin": "^0.1.19",
+    "connect-history-api-fallback": "^1.5.0",
     "cross-env": "^5.1.4",
     "css-loader": "^0.28.4",
     "enzyme": "^3.3.0",
@@ -29,6 +31,7 @@
     "html-webpack-plugin": "^3.2.0",
     "jsdom": "^11.10.0",
     "jsdom-simulant": "^1.1.2",
+    "koa-connect": "^2.0.1",
     "mini-css-extract-plugin": "^0.4.0",
     "mocha": "^5.1.1",
     "mocha-typescript": "^1.1.12",
@@ -53,6 +56,7 @@
     "mobx-react": "^5.1.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-router-dom": "^4.2.2",
     "tslib": "^1.7.1"
   }
 }

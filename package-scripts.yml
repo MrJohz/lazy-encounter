@@ -1,6 +1,9 @@
 scripts:
   start: &serve
-    default: 'webpack-serve --config webpack.dev.config'
+    default: 'cross-env
+      WEBPACK_SERVE=enabled
+      webpack-serve --config webpack.dev.config
+    '
 
   build:
     <<: *serve  # alias build.default to start.default

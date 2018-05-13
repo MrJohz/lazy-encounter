@@ -12,7 +12,7 @@ export class DisplayCreature extends React.Component<DisplayCreatureProps> {
     render() {
         const { creature, onBack } = this.props;
 
-        return <FullWidth onBack={onBack}>
+        return <FullWidth>
             <Shortcut shortcut={'back'} onTrigger={onBack}>
                 <pre>{JSON.stringify(creature, null, 2)}</pre>
                 <ShortcutKeys/>

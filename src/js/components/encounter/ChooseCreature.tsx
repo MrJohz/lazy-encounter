@@ -8,7 +8,9 @@ import { OneItem, OneItemInstance } from '../../utils/one-at-a-time';
 import { Popup, PopupItem } from '../stylish';
 import { Square, StylishShortcutKeys as ShortcutKeys } from '../stylish';
 
-type DisplayTypeProps = { kind: CreatureGroup, oneItemChild: OneItemInstance<string> } & Callback<'onSelect', Creature>;
+type DisplayTypeProps
+    = { kind: CreatureGroup, oneItemChild: OneItemInstance<string> }
+    & Callback<'onSelect', CreatureGroup, Creature>;
 
 @observer
 export class DisplayType extends React.Component<DisplayTypeProps> {
@@ -29,8 +31,8 @@ export class DisplayType extends React.Component<DisplayTypeProps> {
     }
 
     renderSingle({ kind, onSelect }: DisplayTypeProps) {
-        return <Square onClick={() => onSelect(kind.creatures[0])}>
-            <Shortcut shortcut={kind.name} onTrigger={() => onSelect(kind.creatures[0])}>
+        return <Square onClick={() => onSelect(kind, kind.creatures[0])}>
+            <Shortcut shortcut={kind.name} onTrigger={() => onSelect(kind, kind.creatures[0])}>
                 {kind.name} - {kind.creatures[0].attributes}
                 <ShortcutKeys/>
             </Shortcut>
@@ -43,8 +45,8 @@ export class DisplayType extends React.Component<DisplayTypeProps> {
                 {kind.name} - {kind.creatures.length} entries
                 <Popup isOpen={oneItemChild.state()}>{
                     kind.creatures.map(creature =>
-                        <PopupItem key={creature.name} onClick={noBubble(() => onSelect(creature))}>
-                            <Shortcut shortcut={creature.name} onTrigger={() => onSelect(creature)}>
+                        <PopupItem key={creature.name} onClick={noBubble(() => onSelect(kind, creature))}>
+                            <Shortcut shortcut={creature.name} onTrigger={() => onSelect(kind, creature)}>
                                 {creature.name} - {creature.attributes}
                                 <ShortcutKeys/>
                             </Shortcut>
@@ -58,10 +60,7 @@ export class DisplayType extends React.Component<DisplayTypeProps> {
 
 type SelectInstanceProps
     = { creatures: CreatureGroup[] }
-    & Callback<'onSelect', Creature>;
-
-// TODO: move 'open'/click functionality into this parent class
-// this way we can ensure that only one child menu is open at a time
+    & Callback<'onSelect', CreatureGroup, Creature>;
 
 @observer
 export class ChooseCreature extends React.Component<SelectInstanceProps> {

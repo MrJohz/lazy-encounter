@@ -26,3 +26,16 @@ module.exports = merge(common, {
         }),
     ]
 });
+
+if (process.env.WEBPACK_SERVE) {
+    module.exports.serve = {
+        add(app) {
+            const history = require('connect-history-api-fallback');
+            const convert = require('koa-connect');
+            app.use(convert(history()));
+        },
+        dev: {
+            publicPath: '/',
+        }
+    }
+}

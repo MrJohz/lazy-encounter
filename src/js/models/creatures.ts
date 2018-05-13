@@ -53,6 +53,20 @@ export class CreatureStore {
         return this._creatures.slice();
     }
 
+    getCreature(group: string, name: string): Creature | null {
+        for (const cg of this.creatures) {
+            if (cg.name === group) {
+                for (const creature of cg.creatures) {
+                    if (creature.name === name) {
+                        return creature;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
     @action
     addCreatureGroup(creature: CreatureGroup) {
         this._creatures.push(creature);

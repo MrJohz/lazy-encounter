@@ -5,7 +5,8 @@ module.exports = {
     entry: './src/js/index.tsx',
     output: {
         filename: 'public/[name].[hash].js',
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, 'dist'),
+        publicPath: '/',
     },
 
     resolve: {

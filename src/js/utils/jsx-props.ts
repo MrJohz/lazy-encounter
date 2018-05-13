@@ -1,4 +1,5 @@
 import { ReactNode, SyntheticEvent } from 'react';
+import { match } from 'react-router';
 
 export type Children<T = ReactNode> = Child<T> | ManyChildren<T>;
 export type Child<T = ReactNode> = { children: T };
@@ -42,3 +43,4 @@ export type Callback<Name extends string, Param1=SENTINEL, Param2=SENTINEL, Para
         : Param3 extends SENTINEL ? { [key in Name]: (param1: Param1, param2: Param2) => void}
         : { [key in Name]: (param1: Param1, param2: Param2, param3: Param3) => void};
 
+export type Match<T> = { match: match<T> };
