@@ -5,8 +5,8 @@ import { Creature, CreatureGroup } from '../../models/creatures';
 import { Shortcut } from '../../shorty/react';
 import { Callback, noBubble } from '../../utils/jsx-props';
 import { OneItem, OneItemInstance } from '../../utils/one-at-a-time';
-import { Popup, PopupItem } from '../stylish/Popup';
-import { Square } from '../stylish/Square';
+import { Popup, PopupItem } from '../stylish';
+import { Square, StylishShortcutKeys as ShortcutKeys } from '../stylish';
 
 type DisplayTypeProps = { kind: CreatureGroup, oneItemChild: OneItemInstance<string> } & Callback<'onSelect', Creature>;
 
@@ -32,6 +32,7 @@ export class DisplayType extends React.Component<DisplayTypeProps> {
         return <Square onClick={() => onSelect(kind.creatures[0])}>
             <Shortcut shortcut={kind.name} onTrigger={() => onSelect(kind.creatures[0])}>
                 {kind.name} - {kind.creatures[0].attributes}
+                <ShortcutKeys/>
             </Shortcut>
         </Square>;
     }
@@ -45,9 +46,11 @@ export class DisplayType extends React.Component<DisplayTypeProps> {
                         <PopupItem key={creature.name} onClick={noBubble(() => onSelect(creature))}>
                             <Shortcut shortcut={creature.name} onTrigger={() => onSelect(creature)}>
                                 {creature.name} - {creature.attributes}
+                                <ShortcutKeys/>
                             </Shortcut>
                         </PopupItem>)
                 }</Popup>
+                <ShortcutKeys/>
             </Shortcut>
         </Square>;
     }

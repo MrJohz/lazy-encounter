@@ -58,6 +58,11 @@ export class ShortyProvider extends React.Component<ShortyProviderProps, ShortyP
     }
 }
 
+const {
+    Provider: ShortcutKeyProvider,
+    Consumer: ShortcutKeyConsumer,
+} = React.createContext<null | ShortcutHandle>(null);
+
 type ShortcutImplProps
     = { shortcutText: string, shorty: Shorty, onTrigger: () => void }
     & Optional<Children>;
@@ -66,8 +71,9 @@ class ShortcutImpl extends React.Component<ShortcutImplProps> {
 
     private readonly shorty: Shorty;
     private readonly shortcutText: string;
-    private onTrigger: () => void;
-    private shortcut!: ShortcutHandle;
+    private readonly onTrigger: () => void;
+
+    state: { shortcut: ShortcutHandle | null } = { shortcut: null };
 
     constructor(props: ShortcutImplProps) {
         super(props);
@@ -78,16 +84,20 @@ class ShortcutImpl extends React.Component<ShortcutImplProps> {
     }
 
     componentDidMount() {
-        this.shortcut = this.shorty.addShortcut(this.shortcutText);
-        this.shortcut.on('keys:end', this.onTrigger);
+        const shortcut = this.shorty.addShortcut(this.shortcutText);
+        shortcut.on('keys:end', this.onTrigger);
+
+        this.setState({ shortcut });
     }
 
     componentWillUnmount() {
-        this.shorty.removeShortcut(this.shortcut);
+        if (this.state.shortcut) {
+            this.shorty.removeShortcut(this.state.shortcut);
+        }
     }
 
     render() {
-        return this.props.children;
+        return <ShortcutKeyProvider value={this.state.shortcut} children={this.props.children}/>;
     }
 
 }
@@ -107,4 +117,37 @@ export function Shortcut({ onTrigger, shortcut, children }: ShortcutProps) {
     };
 
     return <ShortyContextConsumer children={renderWithShorty}/>;
+}
+
+type ShortcutKeyImplProps = { shortcutHandle: ShortcutHandle } & ShortcutKeyProps;
+
+class ShortcutKeyImpl extends React.Component<ShortcutKeyImplProps> {
+
+    state: { keys: string[] };
+
+    constructor(props: ShortcutKeyImplProps) {
+        super(props);
+        this.state = { keys: this.props.shortcutHandle.keys };
+        this.props.shortcutHandle.on('shortcut:change', (keys) => this.setState({ keys }));
+    }
+
+    render() {
+        const { style, className } = this.props;
+        // TODO: should highlight currently selected keys
+        return <span {...{ style, className }}>{this.state.keys.join('-')}</span>;
+    }
+}
+
+
+// TODO: more options, e.g. highlightedClassName/highlightedStyle, replace '-' with ' ' etc
+export type ShortcutKeyProps = { style?: any, className?: string };
+
+export function ShortcutKeys(props: ShortcutKeyProps) {
+    const renderWithShortcut = (shortcut: ShortcutHandle | null) => {
+        if (!shortcut) return null;
+
+        return <ShortcutKeyImpl {...props} shortcutHandle={shortcut}/>;
+    };
+
+    return <ShortcutKeyConsumer children={renderWithShortcut}/>;
 }

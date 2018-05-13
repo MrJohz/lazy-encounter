@@ -1,8 +1,9 @@
 import { observer } from 'mobx-react';
 import React from 'react';
 import { Creature } from '../../models/creatures';
+import { Shortcut } from '../../shorty/react';
 import { Callback } from '../../utils/jsx-props';
-import { FullWidth } from '../stylish/FullWidth';
+import { FullWidth, StylishShortcutKeys as ShortcutKeys } from '../stylish';
 
 type DisplayCreatureProps = { creature: Creature } & Callback<'onBack'>
 
@@ -12,7 +13,10 @@ export class DisplayCreature extends React.Component<DisplayCreatureProps> {
         const { creature, onBack } = this.props;
 
         return <FullWidth onBack={onBack}>
-            <pre>{JSON.stringify(creature, null, 2)}</pre>
+            <Shortcut shortcut={'back'} onTrigger={onBack}>
+                <pre>{JSON.stringify(creature, null, 2)}</pre>
+                <ShortcutKeys/>
+            </Shortcut>
         </FullWidth>;
     }
 }

@@ -25,7 +25,8 @@ class AddEventListenerAdaptor extends Adaptor {
     private listener(e: KeyboardEvent) {
         if (e.altKey || e.ctrlKey) {
             return;  // don't handle special key combinations like Ctrl+W
-        } else if (e.key.length === 1) {  // single character letter
+        } else if (e.key.length === 1 && e.key !== ' ') {  // single character letter (exclude spacebar)
+            // TODO: ensure tests cover spacebar case
             e.preventDefault();
             e.stopPropagation();
             return this.emit(e.key.toLowerCase());

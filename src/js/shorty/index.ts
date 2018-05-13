@@ -42,6 +42,7 @@ function createId(name: string, id?: number): string {
     return name
             .toLowerCase()
             .replace(/\./, '')
+            .replace(/\s/, '')  // TODO: add tests for this
         + (typeof id === 'undefined' ? '' : '' + id);
 }
 
@@ -64,7 +65,7 @@ export class Shorty {
         handleList.push(handle);
         this.shortcuts.add(shortcutId + handleList.length, handle);
 
-        this._updateHandles();
+        this._updateHandles();  // TODO: are there tests for this?
         return handle;
     }
 
@@ -75,6 +76,7 @@ export class Shorty {
 
         handleList.splice(handleId, 1);
         this.shortcuts.remove(shortcutId + (handleId + 1));
+        this._updateHandles();  // TODO: add tests for this
     }
 
     get shortcutCount(): number {
