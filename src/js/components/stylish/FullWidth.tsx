@@ -1,20 +1,31 @@
-import React, { MouseEvent } from 'react';
 import classNames from 'classnames';
+import React from 'react';
 
-import { Children, childrenise, Callback, Optional, ClassName } from '../../utils/jsx-props';
+import { Children, childrenise, Optional, ClassName } from '../../utils/jsx-props';
 
 import styles from './FullWidth.css';
 
 type Props = Children
-    & Optional<ClassName>
-    & Optional<Callback<'onClick', MouseEvent<HTMLDivElement>>>;
+    & Optional<ClassName>;
 
-export function FullWidth(props: Props) {
-    const { children, className, ...rest } = props;
+export class FullWidth extends React.PureComponent<Props> {
+    render() {
+        const { children, className } = this.props;
 
-    const mergedClass = classNames(styles.fullWidth, className);
+        const header: any = (childrenise(children) || []).filter((child: any) => child.type === FullWidth.Header)[0];
+        console.log(header.props.children);
+        const mergedClass = classNames(styles.fullWidth, className);
 
-    return <div className={mergedClass} {...rest}>{
-        childrenise(children)
-    }</div>;
+        return <div className={mergedClass}>{
+
+        }</div>;
+    }
+
+    static Header(children: Children) {
+        return <>{childrenise(children)}</>;
+    }
+
+    static Actions(children: Children) {
+        return <>{childrenise(children)}</>;
+    }
 }

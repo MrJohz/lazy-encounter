@@ -33,7 +33,9 @@ export class DisplayType extends React.Component<DisplayTypeProps> {
     renderSingle({ kind, onSelect }: DisplayTypeProps) {
         return <Square onClick={() => onSelect(kind, kind.creatures[0])}>
             <Shortcut shortcut={kind.name} onTrigger={() => onSelect(kind, kind.creatures[0])}>
-                {kind.name} - {kind.creatures[0].attributes}
+                {kind.name} - {kind.creatures[0].attributes
+                .filter(attr => attr.type === 'string')
+                .map((attr: any) => attr['value'])}
                 <ShortcutKeys/>
             </Shortcut>
         </Square>;
@@ -47,7 +49,9 @@ export class DisplayType extends React.Component<DisplayTypeProps> {
                     kind.creatures.map(creature =>
                         <PopupItem key={creature.name} onClick={noBubble(() => onSelect(kind, creature))}>
                             <Shortcut shortcut={creature.name} onTrigger={() => onSelect(kind, creature)}>
-                                {creature.name} - {creature.attributes}
+                                {creature.name} - {creature.attributes
+                                .filter(attr => attr.type === 'string')
+                                .map((attr: any) => attr['value'])}
                                 <ShortcutKeys/>
                             </Shortcut>
                         </PopupItem>)

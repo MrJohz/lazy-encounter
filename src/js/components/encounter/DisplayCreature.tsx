@@ -13,10 +13,13 @@ export class DisplayCreature extends React.Component<DisplayCreatureProps> {
         const { creature, onBack } = this.props;
 
         return <FullWidth>
-            <Shortcut shortcut={'back'} onTrigger={onBack}>
-                <pre>{JSON.stringify(creature, null, 2)}</pre>
-                <ShortcutKeys/>
-            </Shortcut>
+            <FullWidth.Header>
+                <h1>{creature.name} - {creature.attributes}</h1>
+                <Shortcut shortcut={'back'} onTrigger={onBack} children={<ShortcutKeys/>}/>
+            </FullWidth.Header>
+            <FullWidth.Actions>
+
+            </FullWidth.Actions>
         </FullWidth>;
     }
 }
