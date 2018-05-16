@@ -4,7 +4,7 @@ import React from 'react';
 import { Creature, CreatureGroup } from '../../models/creatures';
 import { Shortcut } from '../../shorty/react';
 import { Callback, noBubble } from '../../utils/jsx-props';
-import { OneItem, OneItemInstance } from '../../utils/one-at-a-time';
+import { OneItem, OneItemInstance, OneItemHandle } from '../../utils/one-at-a-time';
 import { Popup, PopupItem } from '../stylish';
 import { Square, StylishShortcutKeys as ShortcutKeys } from '../stylish';
 
@@ -12,8 +12,18 @@ type DisplayTypeProps
     = { kind: CreatureGroup, oneItemChild: OneItemInstance<string> }
     & Callback<'onSelect', CreatureGroup, Creature>;
 
-@observer
 export class DisplayType extends React.Component<DisplayTypeProps> {
+
+    state: { listener: OneItemHandle | null, open: boolean } = { listener: null, open: false };
+
+    componentDidMount() {
+        const handle = this.props.oneItemChild.listen(state =>
+            this.setState({ open: state, listener: handle }));
+    }
+
+    componentWillUnmount() {
+        this.state.listener && this.state.listener.remove();
+    }
 
     @bind
     invertSelector(): void {

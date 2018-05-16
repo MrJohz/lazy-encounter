@@ -1,20 +1,28 @@
-import { observable, action } from 'mobx';
+import { EventEmitter } from 'eventemitter3';
 
-export type OneItemInstance<T> = OneItemInstanceClass<T> & { '__TYPE_BRAND__': 'instance' };
+export type OneItemHandle = { remove: () => void };
+export type OneItemInstance<T> = OneItemInstanceClass<T>;  // hide constructor (I think?)
 
-export class OneItemInstanceClass<T> {
+class OneItemInstanceClass<T> {
+
+    private ee = new EventEmitter();
 
     constructor(private parent: OneItem<T>, private name: T) {}
+
+    listen(callback: (state: boolean, t: this) => void): OneItemHandle {
+        this.ee.addListener('change', callback);
+        return { remove: () => this.ee.removeListener('change', callback) };
+    }
 
     state() {
         return this.parent.selected === this.name;
     }
 
-    @action
     set(state: boolean) {
         if (state === this.state()) return;  // no need to change the current state
 
         this.parent.selected = state === true ? this.name : null;
+        this.ee.emit('change', this.state(), this);
     }
 
     invert() {
@@ -25,7 +33,6 @@ export class OneItemInstanceClass<T> {
 
 export class OneItem<T> {
 
-    @observable
     selected: null | T = null;
 
     instance(name: T): OneItemInstance<T> {
