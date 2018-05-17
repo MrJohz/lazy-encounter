@@ -5,7 +5,7 @@ import { CreatureGroup, CreatureGroupID, creatureGroupReducer } from './creature
 import { CreatureID, Creature, creatureReducer } from './creatures';
 import { createDummyData } from './dummy';
 
-type App = {
+export type AppState = {
     counters: Map<CounterID, Counter>;
     creatures: { map: Map<CreatureID, Creature>, ids: List<CreatureID> };
     creatureGroups: { map: Map<CreatureGroupID, CreatureGroup>, ids: List<CreatureGroupID> };
@@ -13,23 +13,19 @@ type App = {
 
 function namespace<S>(namespace: string, reducer: Reducer<S, any>, def: S): Reducer {
     const prepend = `@${namespace}/`;
-    return (state: S, action: AnyAction) => {
-        action.type.startsWith(prepend) && console.log(`before (action='${action.type}:`, state);
-        const end = action.type.startsWith(prepend)
+    return (state: S, action: AnyAction) =>
+        action.type.startsWith(prepend)
             ? reducer(state, action)
             : typeof state === 'undefined' ? def : state;
-        action.type.startsWith(prepend) && console.log(`after (action='${action.type}:`, state);
-        return end;
-    };
 }
 
 const appReducer = combineReducers({
     counters:
         namespace('COUNTER', countReducer, Map()),
     creatures:
-        namespace('CREATURE', creatureReducer, { map: Map(), ids: List() } as App['creatures']),
+        namespace('CREATURE', creatureReducer, { map: Map(), ids: List() } as AppState['creatures']),
     creatureGroups:
-        namespace('CREATURE_GROUP', creatureGroupReducer, { map: Map(), ids: List() } as App['creatureGroups']),
+        namespace('CREATURE_GROUP', creatureGroupReducer, { map: Map(), ids: List() } as AppState['creatureGroups']),
 });
 
 export const store = createStore(appReducer);

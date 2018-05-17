@@ -1,5 +1,6 @@
 import { Record, List, Map } from 'immutable';
-import uuid from 'uuid/v4';
+
+let currentId = 1;
 
 import { CounterID } from './counters';
 
@@ -32,7 +33,8 @@ export class Creature extends Record<CreatureProps>({
     conditions: List(),
 }) {
     constructor(name: string, attributes: Iterable<Attribute>, actions: Iterable<Action>) {
-        const id = uuid() as CreatureID;
+        const id = "" + currentId as CreatureID;
+        currentId += 1;
         super({ id, name, attributes: List(attributes), actions: List(actions) });
     }
 }

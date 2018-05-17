@@ -4,10 +4,10 @@ import uuid from 'uuid/v4';
 import { Creature, CreatureID } from './creatures';
 
 export type CreatureGroupID = string & { '__ID_TYPE__': 'creature_group' };
-type CreatureGroupProps = {
+type CreatureGroupProps<T=CreatureID> = {
     id: CreatureGroupID;
     name: string;
-    creatures: List<CreatureID>;
+    creatures: List<T>;
 }
 
 export class CreatureGroup extends Record<CreatureGroupProps>({

@@ -94,7 +94,6 @@ function dragons(store: Store) {
 }
 
 export function createDummyData(store: Store) {
-    // store.subscribe(() => console.log(store.getState()));
     goblins(store);
     owlbears(store);
     dragons(store);
