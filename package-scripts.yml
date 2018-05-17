@@ -2,13 +2,13 @@ scripts:
   start: &serve
     default: 'cross-env
       WEBPACK_SERVE=enabled
-      webpack-serve --config webpack.dev.config
+      webpack-serve --config webpack.dev.config.js
     '
 
   build:
     <<: *serve  # alias build.default to start.default
-    development: 'webpack --config webpack.dev.config'
-    production: 'webpack --config webpack.prod.config'
+    development: 'webpack --config webpack.dev.config.js'
+    production: 'webpack --config webpack.prod.config.js'
 
   test:
     default: 'cross-env

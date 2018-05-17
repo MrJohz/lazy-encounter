@@ -19,6 +19,7 @@
     "@types/mocha": "^5.2.0",
     "@types/react": "^16.0.25",
     "@types/react-dom": "^16.0.3",
+    "@types/react-redux": "^6.0.0",
     "@types/react-router-dom": "^4.2.6",
     "@types/sinon": "^4.3.1",
     "awesome-typescript-loader": "^5.0.0",
@@ -49,14 +50,19 @@
     "webpack-serve": "^1.0.2"
   },
   "dependencies": {
+    "@types/uuid": "^3.4.3",
     "bind-decorator": "^1.0.11",
     "classnames": "^2.2.5",
     "eventemitter3": "^3.1.0",
+    "immutable": "^4.0.0-rc.9",
     "mobx": "^4.2.1",
     "mobx-react": "^5.1.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
-    "tslib": "^1.7.1"
+    "redux": "^4.0.0",
+    "tslib": "^1.7.1",
+    "uuid": "^3.2.1"
   }
 }
