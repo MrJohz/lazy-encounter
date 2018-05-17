@@ -24,35 +24,35 @@ export class Counter extends Record<CounterProps>({
 }
 
 type COUNT_ACTIONS
-    = { type: '$COUNTER/MODIFY', counterId: CounterID, by: number }
-    | { type: '$COUNTER/SET_TO', counterId: CounterID, to: number }
-    | { type: '$COUNTER/CREATE', counter: Counter };
+    = { type: '@COUNTER/MODIFY', counterId: CounterID, by: number }
+    | { type: '@COUNTER/SET_TO', counterId: CounterID, to: number }
+    | { type: '@COUNTER/CREATE', counter: Counter };
 
-export function create(counter: Counter): COUNT_ACTIONS {
-    return { type: '$COUNTER/CREATE', counter };
+export function createCounter(counter: Counter): COUNT_ACTIONS {
+    return { type: '@COUNTER/CREATE', counter };
 }
 
-export function modify(counter: Counter | CounterID, change: number): COUNT_ACTIONS {
+export function changeCounter(counter: Counter | CounterID, change: number): COUNT_ACTIONS {
     const counterId = counter instanceof Counter ? counter.id : counter;
-    return { type: '$COUNTER/MODIFY', counterId, by: change };
+    return { type: '@COUNTER/MODIFY', counterId, by: change };
 }
 
-export function setTo(counter: Counter | CounterID, value: number): COUNT_ACTIONS {
+export function setCounterTo(counter: Counter | CounterID, value: number): COUNT_ACTIONS {
     const counterId = counter instanceof Counter ? counter.id : counter;
-    return { type: '$COUNTER/SET_TO', counterId, to: value };
+    return { type: '@COUNTER/SET_TO', counterId, to: value };
 }
 
 type CounterDict = Map<CounterID, Counter>;
 
 export function countReducer(state: CounterDict = Map(), action: COUNT_ACTIONS): CounterDict {
     switch (action.type) {
-        case '$COUNTER/CREATE':
+        case '@COUNTER/CREATE':
             return state.set(action.counter.id, action.counter);
-        case '$COUNTER/MODIFY': {
+        case '@COUNTER/MODIFY': {
             const counter = state.get(action.counterId) as Counter;
             return state.set(counter.id, counter.set('currentValue', counter.currentValue + action.by));
         }
-        case '$COUNTER/SET_TO': {
+        case '@COUNTER/SET_TO': {
             const counter = state.get(action.counterId) as Counter;
             return state.set(counter.id, counter.set('currentValue', action.to));
         }

@@ -22,40 +22,40 @@ export class CreatureGroup extends Record<CreatureGroupProps>({
 }
 
 type CREATURE_GROUP_ACTIONS
-    = { type: '$CREATURE_GROUP/CREATE', creatureGroup: CreatureGroup }
-    | { type: '$CREATURE_GROUP/ADD_CREATURE', creatureGroupId: CreatureGroupID, creatureId: CreatureID }
-    | { type: '$CREATURE_GROUP/REMOVE_CREATURE', creatureGroupId: CreatureGroupID, creatureId: CreatureID };
+    = { type: '@CREATURE_GROUP/CREATE', creatureGroup: CreatureGroup }
+    | { type: '@CREATURE_GROUP/ADD_CREATURE', creatureGroupId: CreatureGroupID, creatureId: CreatureID }
+    | { type: '@CREATURE_GROUP/REMOVE_CREATURE', creatureGroupId: CreatureGroupID, creatureId: CreatureID };
 
 type GroupOrID = CreatureGroup | CreatureGroupID;
 
-export function create(creatureGroup: CreatureGroup): CREATURE_GROUP_ACTIONS {
-    return { type: '$CREATURE_GROUP/CREATE', creatureGroup };
+export function createCreatureGroup(creatureGroup: CreatureGroup): CREATURE_GROUP_ACTIONS {
+    return { type: '@CREATURE_GROUP/CREATE', creatureGroup };
 }
 
-export function addCreature(group: GroupOrID, creature: Creature | CreatureID): CREATURE_GROUP_ACTIONS {
+export function addCreatureToGroup(group: GroupOrID, creature: Creature | CreatureID): CREATURE_GROUP_ACTIONS {
     const creatureGroupId = group instanceof CreatureGroup ? group.id : group;
     const creatureId = creature instanceof Creature ? creature.id : creature;
-    return { type: '$CREATURE_GROUP/ADD_CREATURE', creatureGroupId, creatureId };
+    return { type: '@CREATURE_GROUP/ADD_CREATURE', creatureGroupId, creatureId };
 }
 
-export function removeCreature(group: GroupOrID, creature: Creature | CreatureID): CREATURE_GROUP_ACTIONS {
+export function removeCreatureFromGroup(group: GroupOrID, creature: Creature | CreatureID): CREATURE_GROUP_ACTIONS {
     const creatureGroupId = group instanceof CreatureGroup ? group.id : group;
     const creatureId = creature instanceof Creature ? creature.id : creature;
-    return { type: '$CREATURE_GROUP/REMOVE_CREATURE', creatureGroupId, creatureId };
+    return { type: '@CREATURE_GROUP/REMOVE_CREATURE', creatureGroupId, creatureId };
 }
 
-type CreatureDict = { map: Map<CreatureGroupID, CreatureGroup>, ids: List<CreatureGroupID> };
+type CGDict = { map: Map<CreatureGroupID, CreatureGroup>, ids: List<CreatureGroupID> };
 
-function mapReducer(state: CreatureDict['map'], action: CREATURE_GROUP_ACTIONS) {
+function mapReducer(state: CGDict['map'], action: CREATURE_GROUP_ACTIONS) {
     switch (action.type) {
-        case '$CREATURE_GROUP/CREATE':
+        case '@CREATURE_GROUP/CREATE':
             return state.set(action.creatureGroup.id, action.creatureGroup);
-        case '$CREATURE_GROUP/ADD_CREATURE': {
+        case '@CREATURE_GROUP/ADD_CREATURE': {
             const creatureGroup = state.get(action.creatureGroupId) as CreatureGroup;
             const creatureList = creatureGroup.creatures.push(action.creatureId);
             return state.set(creatureGroup.id, creatureGroup.set('creatures', creatureList));
         }
-        case '$CREATURE_GROUP/REMOVE_CREATURE': {
+        case '@CREATURE_GROUP/REMOVE_CREATURE': {
             const creatureGroup = state.get(action.creatureGroupId) as CreatureGroup;
             const creatureList = creatureGroup.creatures.filter(id => id !== action.creatureId);
             return state.set(creatureGroup.id, creatureGroup.set('creatures', creatureList));
@@ -63,17 +63,17 @@ function mapReducer(state: CreatureDict['map'], action: CREATURE_GROUP_ACTIONS) 
     }
 }
 
-function idsReducer(state: CreatureDict['ids'], action: CREATURE_GROUP_ACTIONS) {
+function idsReducer(state: CGDict['ids'], action: CREATURE_GROUP_ACTIONS) {
     switch (action.type) {
-        case '$CREATURE_GROUP/CREATE':
+        case '@CREATURE_GROUP/CREATE':
             return state.push(action.creatureGroup.id);
-        case '$CREATURE_GROUP/ADD_CREATURE':
-        case '$CREATURE_GROUP/REMOVE_CREATURE':
+        case '@CREATURE_GROUP/ADD_CREATURE':
+        case '@CREATURE_GROUP/REMOVE_CREATURE':
             return state;
     }
 }
 
-export function creatureGroupReducer(state: CreatureDict, action: CREATURE_GROUP_ACTIONS) {
+export function creatureGroupReducer(state: CGDict | undefined, action: CREATURE_GROUP_ACTIONS): CGDict {
     if (typeof state === 'undefined') return { map: Map(), ids: List() };
     return {
         map: mapReducer(state.map, action),
