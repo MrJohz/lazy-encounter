@@ -1,7 +1,6 @@
 import bind from 'bind-decorator';
 import { List, Map } from 'immutable';
-import { observer } from 'mobx-react';
-import React, { Component } from 'react';
+import React, { Component, PureComponent, StatelessComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { Shortcut } from '../../shorty/react';
@@ -79,33 +78,30 @@ export class DisplayType extends Component<DisplayTypeProps> {
 }
 
 type ImplProps
-    = { groups: List<CreatureGroup>, creatures: Map<CreatureID, Creature> };
+    = { groups: List<CreatureGroup>, creatures: Map<CreatureID, Creature> }
+    & ChooseCreatureProps;
 
-@observer
-class ChooseCreatureImpl extends Component<ImplProps & ChooseCreatureProps> {
+const ChooseCreatureImpl: StatelessComponent<ImplProps> = ({groups, creatures, onSelect}: ImplProps) => {
 
-    private oneItemParent = new OneItem<string>();
+    const oneItemParent = new OneItem<string>();
+    return <>
+        {groups.map(group => {
+            const name = group.name;
+            const creatureList = group.creatures.map(cr => creatures.get(cr) as Creature);
+            return <DisplayType key={group.id}
+                                onSelect={onSelect}
+                                kind={{ name, creatures: creatureList }}
+                                oneItemChild={oneItemParent.instance(group.id)}/>;
+        })}
+    </>;
 
-    render() {
-        const { groups, creatures, onSelect } = this.props;
-        return <>
-            {groups.map(group => {
-                const name = group.name;
-                const creatureList = group.creatures.map(cr => creatures.get(cr) as Creature);
-                return <DisplayType key={group.id}
-                                    onSelect={onSelect}
-                                    kind={{ name, creatures: creatureList }}
-                                    oneItemChild={this.oneItemParent.instance(group.id)}/>;
-            })}
-        </>;
-    }
+};
 
-}
-
-const mapStateToProps = (state: AppState, {}: ChooseCreatureProps): ImplProps => {
+const mapStateToProps = (state: AppState, existing: ChooseCreatureProps): ImplProps => {
     return ({
         groups: state.creatureGroups.ids.map(id => state.creatureGroups.map.get(id) as CreatureGroup),
         creatures: state.creatures.map,
+        ...existing
     });
 };
 

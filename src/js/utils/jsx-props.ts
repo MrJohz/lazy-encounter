@@ -1,9 +1,9 @@
 import { ReactNode, SyntheticEvent } from 'react';
 import { match } from 'react-router';
 
-export type Children<T = ReactNode> = Child<T> | ManyChildren<T>;
-export type Child<T = ReactNode> = { children: T };
-export type ManyChildren<T = ReactNode> = { children: T[] };
+export type Children<K extends string = 'children', T = ReactNode> = Child<K, T | Iterable<T>>;
+export type Child<K extends string = 'children', T = ReactNode> = { [key in K]: T };
+export type ManyChildren<K extends string = 'children', T = ReactNode> = { [key in K]: Iterable<T> };
 
 export function childrenise<T = ReactNode>(children?: T | T[]): T[] | null {
     if (typeof children === 'undefined' || children === null) {
