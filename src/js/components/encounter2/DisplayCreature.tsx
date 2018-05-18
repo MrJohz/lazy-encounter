@@ -1,22 +1,25 @@
-import React, { StatelessComponent } from 'react';
-import { connect } from 'react-redux';
-import { AppState } from '../../stores';
-import { Creature, CreatureID } from '../../stores/creatures';
+import { observer } from 'mobx-react';
+import React from 'react';
+import { Creature } from '../../models/creatures';
+import { Shortcut } from '../../shorty/react';
 import { Callback } from '../../utils/jsx-props';
+import { FullWidth, StylishShortcutKeys as ShortcutKeys } from '../stylish';
 
-type ImplProps
-    = { creature: Creature } & Callback<'onBack'>;
+type DisplayCreatureProps = { creature: Creature } & Callback<'onBack'>
 
-const DisplayCreatureImpl: StatelessComponent<ImplProps> = ({ creature, onBack }: ImplProps) => {
-    return <span onClick={onBack}>{creature.name}</span>;
-};
+@observer
+export class DisplayCreature extends React.Component<DisplayCreatureProps> {
+    render() {
+        const { creature, onBack } = this.props;
 
-const mapStateToProps = (state: AppState, { creatureId }: DisplayCreatureProps) =>
-    ({
-        creature: state.creatures.map.get(creatureId) as Creature,
-    });
+        return <FullWidth>
+            <FullWidth.Header>
+                <h1>{creature.name} - {creature.attributes}</h1>
+                <Shortcut shortcut={'back'} onTrigger={onBack} children={<ShortcutKeys/>}/>
+            </FullWidth.Header>
+            <FullWidth.Actions>
 
-type DisplayCreatureProps
-    = { creatureId: CreatureID } & Callback<'onBack'>;
-
-export const DisplayCreature = connect(mapStateToProps)(DisplayCreatureImpl);
+            </FullWidth.Actions>
+        </FullWidth>;
+    }
+}

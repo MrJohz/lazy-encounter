@@ -1,29 +1,24 @@
 import bind from 'bind-decorator';
-import { List, Map } from 'immutable';
 import { observer } from 'mobx-react';
-import React, { StatelessComponent, Component, PureComponent } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import { Creature, CreatureGroup } from '../../models/creatures';
 import { Shortcut } from '../../shorty/react';
-import { StylishShortcutKeys as ShortcutKeys } from '../stylish';
-import { AppState } from '../../stores';
-import { CreatureGroup } from '../../stores/creature-groups';
-import { Creature, CreatureID } from '../../stores/creatures';
 import { Callback, noBubble } from '../../utils/jsx-props';
-import { OneItemHandle, OneItemInstance, OneItem } from '../../utils/one-at-a-time';
-import { Square, Popup, PopupItem } from '../stylish';
+import { OneItem, OneItemInstance, OneItemHandle } from '../../utils/one-at-a-time';
+import { Popup, PopupItem } from '../stylish';
+import { Square, StylishShortcutKeys as ShortcutKeys } from '../stylish';
 
 type DisplayTypeProps
-    = { kind: { name: string, creatures: List<Creature> }, oneItemChild: OneItemInstance<string> }
-    & Callback<'onSelect', CreatureID>;
+    = { kind: CreatureGroup, oneItemChild: OneItemInstance<string> }
+    & Callback<'onSelect', CreatureGroup, Creature>;
 
-export class DisplayType extends Component<DisplayTypeProps> {
+export class DisplayType extends React.Component<DisplayTypeProps> {
 
     state: { listener: OneItemHandle | null, open: boolean } = { listener: null, open: false };
 
     componentDidMount() {
-        const handle = this.props.oneItemChild.listen(state => {
-            return this.setState({ open: state, listener: handle });
-        });
+        const handle = this.props.oneItemChild.listen(state =>
+            this.setState({ open: state, listener: handle }));
     }
 
     componentWillUnmount() {
@@ -37,7 +32,7 @@ export class DisplayType extends Component<DisplayTypeProps> {
 
     render() {
         const { kind } = this.props;
-        switch (kind.creatures.size) {
+        switch (kind.creatures.length) {
             case 1:
                 return this.renderSingle(this.props);
             default:
@@ -46,10 +41,9 @@ export class DisplayType extends Component<DisplayTypeProps> {
     }
 
     renderSingle({ kind, onSelect }: DisplayTypeProps) {
-        const creature = kind.creatures.get(0) as Creature;
-        return <Square onClick={() => onSelect(creature.id)}>
-            <Shortcut shortcut={kind.name} onTrigger={() => onSelect(creature.id)}>
-                {kind.name} - {creature.attributes
+        return <Square onClick={() => onSelect(kind, kind.creatures[0])}>
+            <Shortcut shortcut={kind.name} onTrigger={() => onSelect(kind, kind.creatures[0])}>
+                {kind.name} - {kind.creatures[0].attributes
                 .filter(attr => attr.type === 'string')
                 .map((attr: any) => attr['value'])}
                 <ShortcutKeys/>
@@ -60,11 +54,11 @@ export class DisplayType extends Component<DisplayTypeProps> {
     renderMany({ kind, onSelect, oneItemChild }: DisplayTypeProps) {
         return <Square onClick={this.invertSelector}>
             <Shortcut shortcut={kind.name} onTrigger={this.invertSelector}>
-                {kind.name} - {kind.creatures.size} entries
+                {kind.name} - {kind.creatures.length} entries
                 <Popup isOpen={oneItemChild.state()}>{
                     kind.creatures.map(creature =>
-                        <PopupItem key={creature.name} onClick={noBubble(() => onSelect(creature.id))}>
-                            <Shortcut shortcut={creature.name} onTrigger={() => onSelect(creature.id)}>
+                        <PopupItem key={creature.name} onClick={noBubble(() => onSelect(kind, creature))}>
+                            <Shortcut shortcut={creature.name} onTrigger={() => onSelect(kind, creature)}>
                                 {creature.name} - {creature.attributes
                                 .filter(attr => attr.type === 'string')
                                 .map((attr: any) => attr['value'])}
@@ -78,38 +72,21 @@ export class DisplayType extends Component<DisplayTypeProps> {
     }
 }
 
-type ImplProps
-    = { groups: List<CreatureGroup>, creatures: Map<CreatureID, Creature> };
+type SelectInstanceProps
+    = { creatures: CreatureGroup[] }
+    & Callback<'onSelect', CreatureGroup, Creature>;
 
 @observer
-class ChooseCreatureImpl extends Component<ImplProps & ChooseCreatureProps> {
+export class ChooseCreature extends React.Component<SelectInstanceProps> {
 
-    private oneItemParent = new OneItem<string>();
+    oneItemParent = new OneItem<string>();
 
     render() {
-        const { groups, creatures, onSelect } = this.props;
-        return <>
-            {groups.map(group => {
-                const name = group.name;
-                const creatureList = group.creatures.map(cr => creatures.get(cr) as Creature);
-                return <DisplayType key={group.id}
-                                    onSelect={onSelect}
-                                    kind={{ name, creatures: creatureList }}
-                                    oneItemChild={this.oneItemParent.instance(group.id)}/>;
-            })}
-        </>;
+        const { creatures, onSelect } = this.props;
+        return creatures.map(creatureGroup =>
+            <DisplayType key={creatureGroup.name}
+                         kind={creatureGroup}
+                         onSelect={onSelect}
+                         oneItemChild={this.oneItemParent.instance(creatureGroup.name)}/>);
     }
-
 }
-
-const mapStateToProps = (state: AppState, {}: ChooseCreatureProps): ImplProps => {
-    return ({
-        groups: state.creatureGroups.ids.map(id => state.creatureGroups.map.get(id) as CreatureGroup),
-        creatures: state.creatures.map,
-    });
-};
-
-type ChooseCreatureProps
-    = Callback<'onSelect', CreatureID>;
-
-export const ChooseCreature = connect(mapStateToProps)(ChooseCreatureImpl);
