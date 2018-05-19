@@ -1,30 +1,23 @@
 const merge = require('webpack-merge');
-const common = require('./webpack.common.config');
+const common = require('./common.config');
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-
-module.exports = merge(common, {
+module.exports = merge(common.defaultConfig, {
     mode: 'development',
     devtool: 'eval-source-map',
 
     module: {
         rules: [
             {
-                test: /\.css$/,
+                test: /\.s?css$/,
                 use: [
                     { loader: 'style-loader' },
-                    { loader: 'css-loader', options: { modules: true } },
+                    ...common.modules.css,
                 ],
             },
         ]
     },
 
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: './src/index.html',
-            inject: true,
-        }),
-    ]
+    plugins: common.plugins(),
 });
 
 if (process.env.WEBPACK_SERVE) {

@@ -23,12 +23,12 @@ export class App extends React.Component<AppProps, AppState> {
 
     render() {
         return <div className={styles.app}>
-            <ShortyProvider global={true}>
+            {/*<ShortyProvider global={true}>*/}
                 <header className={styles.header}>
-                    <h1>S2T2 - Super Simple Turn Tracker</h1>
+                    <h1>S2T2 - Super Simple Turn&nbsp;Tracker</h1>
                 </header>
                 <Encounter/>
-            </ShortyProvider>
+            {/*</ShortyProvider>*/}
         </div>;
     }
 }

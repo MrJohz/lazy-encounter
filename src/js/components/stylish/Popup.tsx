@@ -1,7 +1,7 @@
 import React from 'react';
 import { Children, childrenise } from '../../utils/jsx-props';
 
-import styles from './Popup.css';
+import styles from './Popup.scss';
 
 export type PopupProps
     = { isOpen: boolean }

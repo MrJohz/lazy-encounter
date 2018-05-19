@@ -1,0 +1,58 @@
+@import './theme.scss';
+
+.square {
+    composes: shadowed from './theme.scss';
+
+    box-sizing: border-box;
+    width: calc(33% - 0.6em * 2);
+    background-color: $main-bg;
+    padding: 0.6em;
+    margin: 0.6em;
+    border: $main-strong solid 1px;
+    position: relative;
+
+    text-align: center;
+
+    &::before {
+        /* used to create the square effect */
+        content: '';
+        padding-top: 45%;
+        float: left;
+    }
+}
+
+.big {
+    position: relative;
+    top: calc(50% - 1em);
+    font-size: 1.3em;
+}
+
+@media screen and (max-width: 850px) {
+    .square {
+        width: calc(50% - 0.6em * 2);
+    }
+
+    .square:nth-child(4n),
+    .square:nth-child(4n-1) {
+        border-top-left-radius: 0.25em;
+        border-bottom-right-radius: 0.25em;
+    }
+
+    .square:nth-child(4n+2),
+    .square:nth-child(4n+1) {
+        border-top-right-radius: 0.25em;
+        border-bottom-left-radius: 0.25em;
+    }
+}
+
+@media screen and (min-width: 851px) and (max-width: 1199px) {
+    .square:nth-child(odd) {
+        border-top-left-radius: 0.25em;
+        border-bottom-right-radius: 0.25em;
+    }
+
+    .square:nth-child(even) {
+        border-top-right-radius: 0.25em;
+        border-bottom-left-radius: 0.25em;
+    }
+}

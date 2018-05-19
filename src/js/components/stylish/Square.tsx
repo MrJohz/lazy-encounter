@@ -3,18 +3,15 @@ import classNames from 'classnames';
 
 import { Children, childrenise, Callback, Optional, ClassName } from '../../utils/jsx-props';
 
-import styles from './Square.css';
+import styles from './Square.scss';
 
 type Props = Children
-    & Optional<ClassName>
     & Optional<Callback<'onClick', MouseEvent<HTMLDivElement>>>;
 
 export function Square(props: Props) {
-    const { children, className, ...rest } = props;
+    const { children, ...rest } = props;
 
-    const mergedClass = classNames(styles.square, className);
-
-    return <div className={mergedClass} {...rest}>{
+    return <div className={styles.square} {...rest}>{
         childrenise(children)
     }</div>;
 }

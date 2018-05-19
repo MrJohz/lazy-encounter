@@ -1,0 +1,31 @@
+@import './theme.scss';
+
+$border-radius: 0.25em;
+$border-radius-double: 0.5em;
+
+.popup {
+    composes: shadowed from './theme.scss';
+
+    &:empty {
+        display: none;
+    }
+
+    &:not(:empty) {
+        position: absolute;
+        list-style-type: none;
+        padding: 0;
+        left: 0.7em;
+        right: 0.7em;
+        z-index: 1;
+        border: $main-strong solid 0.01em;
+        border-bottom: none;
+    }
+
+    li {
+        cursor: pointer;
+        padding: 0.5em 0.3em;
+        background-color: $main-bg;
+        display: block;
+        border-bottom: $main-strong solid 0.01em;
+    }
+}

@@ -6,15 +6,10 @@
 .app {
     position: relative;
     width: 80%;
+    max-width: 55em;
     margin: 0 auto;
     display: flex;
     flex-flow: row wrap;
-}
-
-@media screen and (min-width: 1200px) {
-    .app {
-        width: 65%;
-    }
 }
 
 .header {
@@ -86,6 +81,7 @@ footer, header, hgroup, menu, nav, section) {
     width: 100%;
     font-family: 'Work Sans', sans-serif;
     background-color: #FDFFFC;
+    box-sizing: border-box;
 }
 
 :global(ol, ul) {
