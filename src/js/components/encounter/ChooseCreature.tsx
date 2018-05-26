@@ -1,6 +1,6 @@
 import bind from 'bind-decorator';
 import { List, Map } from 'immutable';
-import React, { Component, PureComponent, StatelessComponent } from 'react';
+import React, { Component, StatelessComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { Shortcut } from '../../shorty/react';
@@ -9,7 +9,7 @@ import { CreatureGroup } from '../../stores/creature-groups';
 import { Creature, CreatureID } from '../../stores/creatures';
 import { Callback, noBubble } from '../../utils/jsx-props';
 import { OneItemHandle, OneItemInstance, OneItem } from '../../utils/one-at-a-time';
-import { StylishShortcutKeys as ShortcutKeys, Square, Popup, PopupItem } from '../stylish';
+import { StylishShortcutKeys as ShortcutKeys, Square, PopupItem } from '../stylish';
 
 type DisplayTypeProps
     = { kind: { name: string, creatures: List<Creature> }, oneItemChild: OneItemInstance<string> }
@@ -56,21 +56,20 @@ export class DisplayType extends Component<DisplayTypeProps> {
         </Square>;
     }
 
-    renderMany({ kind, onSelect, oneItemChild }: DisplayTypeProps) {
-        return <Square onClick={this.invertSelector}>
+    renderMany({ kind, onSelect }: DisplayTypeProps) {
+        const popupChildren = kind.creatures.map(creature =>
+            <PopupItem key={creature.name} onClick={noBubble(() => onSelect(creature.id))}>
+                <Shortcut shortcut={creature.name} onTrigger={() => onSelect(creature.id)}>
+                    {creature.name} - {creature.attributes
+                    .filter(attr => attr.type === 'string')
+                    .map((attr: any) => attr['value'])}
+                    <ShortcutKeys/>
+                </Shortcut>
+            </PopupItem>);
+
+        return <Square popups={popupChildren} popupOpen={this.state.open} onClick={this.invertSelector}>
             <Shortcut shortcut={kind.name} onTrigger={this.invertSelector}>
                 {kind.name} - {kind.creatures.size} entries
-                <Popup isOpen={oneItemChild.state()}>{
-                    kind.creatures.map(creature =>
-                        <PopupItem key={creature.name} onClick={noBubble(() => onSelect(creature.id))}>
-                            <Shortcut shortcut={creature.name} onTrigger={() => onSelect(creature.id)}>
-                                {creature.name} - {creature.attributes
-                                .filter(attr => attr.type === 'string')
-                                .map((attr: any) => attr['value'])}
-                                <ShortcutKeys/>
-                            </Shortcut>
-                        </PopupItem>)
-                }</Popup>
                 <ShortcutKeys/>
             </Shortcut>
         </Square>;
@@ -81,7 +80,7 @@ type ImplProps
     = { groups: List<CreatureGroup>, creatures: Map<CreatureID, Creature> }
     & ChooseCreatureProps;
 
-const ChooseCreatureImpl: StatelessComponent<ImplProps> = ({groups, creatures, onSelect}: ImplProps) => {
+const ChooseCreatureImpl: StatelessComponent<ImplProps> = ({ groups, creatures, onSelect }: ImplProps) => {
 
     const oneItemParent = new OneItem<string>();
     return <>
@@ -101,7 +100,7 @@ const mapStateToProps = (state: AppState, existing: ChooseCreatureProps): ImplPr
     return ({
         groups: state.creatureGroups.ids.map(id => state.creatureGroups.map.get(id) as CreatureGroup),
         creatures: state.creatures.map,
-        ...existing
+        ...existing,
     });
 };
 

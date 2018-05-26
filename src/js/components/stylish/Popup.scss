@@ -1,8 +1,5 @@
 @import './theme.scss';
 
-$border-radius: 0.25em;
-$border-radius-double: 0.5em;
-
 .popup {
     composes: shadowed from './theme.scss';
 
