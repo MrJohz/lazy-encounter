@@ -2,6 +2,11 @@ import { Record, Map } from 'immutable';
 import uuid from 'uuid/v4';
 
 export type CounterID = string & { '__ID_TYPE__': 'counter' };
+
+export function isCounterID(counterID: any): counterID is CounterID {
+    return typeof counterID === 'string';
+}
+
 type CounterProps = {
     id: CounterID;
     currentValue: number;
