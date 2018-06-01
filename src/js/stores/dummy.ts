@@ -14,13 +14,13 @@ function goblins(store: Store) {
     const creatureIds = [];
 
     for (const idx of [1, 2, 4]) {
-        const health = new Counter('health_counter', 14);
+        const health = new Counter(14);
         store.dispatch(createCounter(health));
 
         const creature = new Creature(`Goblin ${idx}`, [
             { type: 'statblock', stats: { ...STATS } },
             { type: 'string', value: attributes[Math.floor(Math.random() * attributes.length)] },
-            { type: 'counter', name: 'Health', value: health.id },
+            { type: 'counter', name: 'Health', value: health.id, display: 'health' },
         ], [
             { name: 'Sword', text: '[1d6] damage' },
             { name: 'Claws', text: '[1d4 + 2] damage' },
@@ -40,13 +40,13 @@ function goblins(store: Store) {
 function owlbears(store: Store) {
     const attributes = ['huge', 'small', 'medium sized', 'scary', 'covered in moss'];
     for (const idx of [1, 2, 3]) {
-        const health = new Counter('health_counter', 52);
+        const health = new Counter(52);
         store.dispatch(createCounter(health));
 
         const creature = new Creature('Owlbear', [
             { type: 'statblock', stats: { ...STATS } },
             { type: 'string', value: attributes[Math.floor(Math.random() * attributes.length)] },
-            { type: 'counter', name: 'Health', value: health.id },
+            { type: 'counter', name: 'Health', value: health.id, display: 'health' },
         ], [
             { name: 'Bite', text: '[1d6] damage' },
             { name: 'Claws', text: '[1d4 + 2] damage' },
@@ -62,15 +62,15 @@ function owlbears(store: Store) {
 function dragons(store: Store) {
     const attributes = ['red', 'white', 'green', 'blue', 'silver'];
 
-    const archetrixHealth = new Counter('health_counter', 191);
-    const deriynyHealth = new Counter('health_counter', 153);
+    const archetrixHealth = new Counter(191);
+    const deriynyHealth = new Counter(153);
     store.dispatch(createCounter(archetrixHealth));
     store.dispatch(createCounter(deriynyHealth));
 
     const archetrix = new Creature('Archetrix', [
         { type: 'statblock', stats: { ...STATS } },
         { type: 'string', value: attributes[Math.floor(Math.random() * attributes.length)] },
-        { type: 'counter', name: 'Health', value: archetrixHealth.id },
+        { type: 'counter', name: 'Health', value: archetrixHealth.id, display: 'health' },
     ], [
         { name: 'Breath', text: '[4d10] damage' },
         { name: 'Bite', text: '[3d6+7] damage' },
@@ -80,7 +80,7 @@ function dragons(store: Store) {
     const deriyny = new Creature('Deriyny', [
         { type: 'statblock', stats: { ...STATS } },
         { type: 'string', value: attributes[Math.floor(Math.random() * attributes.length)] },
-        { type: 'counter', name: 'Health', value: deriynyHealth.id },
+        { type: 'counter', name: 'Health', value: deriynyHealth.id, display: 'health' },
     ], [
         { name: 'Bite', text: '[1d6] damage' },
         { name: 'Claws', text: '[1d4 + 2] damage' },

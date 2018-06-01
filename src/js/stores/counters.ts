@@ -4,7 +4,6 @@ import uuid from 'uuid/v4';
 export type CounterID = string & { '__ID_TYPE__': 'counter' };
 type CounterProps = {
     id: CounterID;
-    type: 'health_counter' | 'pip_counter' | 'number_counter';
     currentValue: number;
     maxValue: number;
     minValue: number;
@@ -12,14 +11,13 @@ type CounterProps = {
 
 export class Counter extends Record<CounterProps>({
     id: '!!NOT INITIALISED!!' as CounterID,
-    type: 'number_counter',
     currentValue: 0,
     maxValue: 0,
     minValue: 0,
 }) {
-    constructor(type: CounterProps['type'], maxValue: number) {
+    constructor(maxValue: number) {
         const id = uuid() as CounterID;
-        super({ id, type, maxValue, minValue: 0, currentValue: maxValue });
+        super({ id, maxValue, minValue: 0, currentValue: maxValue });
     }
 }
 

@@ -27,11 +27,11 @@ const DisplayCreatureImpl: StatelessComponent<ImplProps> = ({ creature, counters
     for (const attr of creature.attributes) {
         if (attr.type === 'counter') {
             const counter = counters.get(attr.value) as Counter;
-            if (counter.type === 'health_counter') {
-                actions.push({ name: `Damage`, text: `Damage` });
-                actions.push({ name: 'Heal', text: 'Heal' });
-                attributes.push(/*<Healthbar counter={counter} />*/);
-            }
+            // if (counter.type === 'health_counter') {
+            //     actions.push({ name: `Damage`, text: `Damage` });
+            //     actions.push({ name: 'Heal', text: 'Heal' });
+            //     attributes.push(/*<Healthbar counter={counter} />*/);
+            // }
         }
     }
 
