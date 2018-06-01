@@ -8,7 +8,7 @@ import styles from './App.css';
 export function App() {
     return <div className={styles.app}>
         <header className={styles.header}>
-            <h1>S2T" - Super Simple Turn&nbsp;Tracker</h1>
+            <h1>S2T2 - Super Simple Turn&nbsp;Tracker</h1>
         </header>
         <Encounter/>
     </div>
