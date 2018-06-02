@@ -4,15 +4,7 @@ import { Statement } from '../executor/ast';
 let currentId = 1;
 
 import { CounterID } from './counters';
-
-export type CounterDisplayType =
-    | 'health'
-    | 'pips';
-
-export type Attribute =
-    | Readonly<{ type: 'statblock', stats: { name: string, value: number, computed?: null }[] }>
-    | Readonly<{ type: 'string', value: string }>
-    | Readonly<{ type: 'counter', name: string, value: CounterID, display: CounterDisplayType }>;
+import { Attribute } from './creature-attributes';
 
 export type Action =
     Readonly<{
@@ -28,7 +20,6 @@ type CreatureProps = {
     id: CreatureID;
     name: string;
 
-    counters: Map<string, CounterID>;
     attributes: List<Attribute>;
     actions: List<Action>;
     conditions: List<Condition>;
@@ -37,7 +28,6 @@ type CreatureProps = {
 export class Creature extends Record<CreatureProps>({
     id: '!!NOT INITIALISED!!' as CreatureID,
     name: '',
-    counters: Map(),
     attributes: List(),
     actions: List(),
     conditions: List(),
@@ -45,16 +35,10 @@ export class Creature extends Record<CreatureProps>({
     constructor(name: string, attributes: Iterable<Attribute>, actions: Iterable<Action>) {
         const id = '' + currentId as CreatureID;
         currentId += 1;
-        const attrs = [];
-        const counterMap: { [key: string]: CounterID } = {};
-        for (const attr of attributes) {
-            attrs.push(attr);
-            if (attr.type === 'counter') {
-                counterMap[attr.name] = attr.value;
-            }
-        }
 
-        super({ id, name, counters: Map(counterMap), attributes: List(attributes), actions: List(actions) });
+        console.log(Array.from(attributes));
+        super({ id, name, attributes: List(attributes), actions: List(actions) });
+        console.log(this.attributes);
     }
 }
 

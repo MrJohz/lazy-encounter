@@ -1,11 +1,13 @@
 import { Store } from 'redux';
 import { createCounter, Counter, CounterID } from './counters';
+import { withSign } from './creature-attributes';
 import { CreatureGroup, createCreatureGroup, addCreatureToGroup } from './creature-groups';
 import { Creature, createCreature, Action } from './creatures';
 
 const STATS = [
-    { name: 'STR', value: 12 }, { name: 'DEX', value: 12 }, { name: 'CON', value: 12 },
-    { name: 'INT', value: 12 }, { name: 'WIS', value: 12 }, { name: 'CHA', value: 12 },
+    { name: 'STR', value: 12, computed: withSign(+3) }, { name: 'DEX', value: 12, computed: withSign(+2) },
+    { name: 'CON', value: 12, computed: withSign(-3) }, { name: 'INT', value: 12, computed: withSign(+0) },
+    { name: 'WIS', value: 12, computed: withSign(-2) }, { name: 'CHA', value: 12, computed: withSign(+1) },
 ];
 
 function heal(counter: Counter): Action {
@@ -15,17 +17,17 @@ function heal(counter: Counter): Action {
         ], parameters: [
             { name: 'value', text: 'How much?' },
         ],
-    }
+    };
 }
 
 function harm(counter: Counter): Action {
     return {
         name: 'Damage', text: '-', actions: [
-        { type: 'stmt', action: 'subtract', counter: counter.id, value: { type: 'param', name: 'value' } },
-    ], parameters: [
-        { name: 'value', text: 'How much?' },
-    ],
-    }
+            { type: 'stmt', action: 'subtract', counter: counter.id, value: { type: 'param', name: 'value' } },
+        ], parameters: [
+            { name: 'value', text: 'How much?' },
+        ],
+    };
 }
 
 function goblins(store: Store) {
@@ -38,7 +40,7 @@ function goblins(store: Store) {
         store.dispatch(createCounter(health));
 
         const creature = new Creature(`Goblin ${idx}`, [
-            { type: 'statblock', stats: { ...STATS } },
+            { type: 'statblock', stats: [...STATS] },
             { type: 'string', value: attributes[Math.floor(Math.random() * attributes.length)] },
             { type: 'counter', name: 'Health', value: health.id, display: 'health' },
         ], [
@@ -66,7 +68,7 @@ function owlbears(store: Store) {
         store.dispatch(createCounter(health));
 
         const creature = new Creature('Owlbear', [
-            { type: 'statblock', stats: { ...STATS } },
+            { type: 'statblock', stats: [...STATS] },
             { type: 'string', value: attributes[Math.floor(Math.random() * attributes.length)] },
             { type: 'counter', name: 'Health', value: health.id, display: 'health' },
         ], [
@@ -92,7 +94,7 @@ function dragons(store: Store) {
     store.dispatch(createCounter(derHealth));
 
     const archetrix = new Creature('Archetrix', [
-        { type: 'statblock', stats: { ...STATS } },
+        { type: 'statblock', stats: [...STATS] },
         { type: 'string', value: attributes[Math.floor(Math.random() * attributes.length)] },
         { type: 'counter', name: 'Health', value: archHealth.id, display: 'health' },
     ], [
@@ -104,7 +106,7 @@ function dragons(store: Store) {
     store.dispatch(createCreature(archetrix));
 
     const deriyny = new Creature('Deriyny', [
-        { type: 'statblock', stats: { ...STATS } },
+        { type: 'statblock', stats: [...STATS] },
         { type: 'string', value: attributes[Math.floor(Math.random() * attributes.length)] },
         { type: 'counter', name: 'Health', value: derHealth.id, display: 'health' },
     ], [

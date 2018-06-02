@@ -4,8 +4,10 @@ import { connect } from 'react-redux';
 import { AppState } from '../../stores';
 import { CounterID, Counter } from '../../stores/counters';
 import { Creature, CreatureID } from '../../stores/creatures';
+import { enumerate } from '../../utils/iterator';
 import { Callback } from '../../utils/jsx-props';
 import { FullWidth, Square } from '../stylish';
+import { Statblock } from './display-components/Statblock';
 
 type ImplProps
     = { creature: Creature | undefined, counters: Map<CounterID, Counter> }
@@ -24,21 +26,19 @@ const DisplayCreatureImpl: StatelessComponent<ImplProps> = ({ creature, counters
     const actions = [];
     const attributes = [];
 
-    for (const attr of creature.attributes) {
-        if (attr.type === 'counter') {
-            const counter = counters.get(attr.value) as Counter;
-            // if (counter.type === 'health_counter') {
-            //     actions.push({ name: `Damage`, text: `Damage` });
-            //     actions.push({ name: 'Heal', text: 'Heal' });
-            //     attributes.push(/*<Healthbar counter={counter} />*/);
-            // }
+    for (const [idx, attr] of enumerate(creature.attributes)) {
+        switch (attr.type) {
+            case 'statblock':
+                attributes.push(<Statblock key={idx} stats={attr.stats}/>);
+                break;
         }
     }
 
     actions.push(...creature.actions);
 
-    return <FullWidth onBack={onBack} actions={actions.map(a => <Square key={a.name}>{a.text}</Square>)}>
+    return <FullWidth onBack={onBack} actions={actions.map(a => <Square key={a.name}>{a.name}</Square>)}>
         {creature.name}
+        {attributes}
     </FullWidth>;
 };
 
