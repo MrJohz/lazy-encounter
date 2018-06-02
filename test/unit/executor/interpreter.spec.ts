@@ -1,3 +1,4 @@
+import { InterpreterError } from '../../../src/js/executor/error';
 import { Interpreter, ContextualInterpreter } from '../../../src/js/executor/interpreter';
 import expect from 'must';
 import { store } from '../../../src/js/stores';
@@ -75,6 +76,19 @@ describe('Interpreter', () => {
                 .to.equal(3);
         });
 
+        it(`evaluates the context object and returns variables from that`, () => {
+            const interpreter = new ContextualInterpreter(store, { myVar: 42 });
+
+            expect(interpreter.evaluateExpression({ type: 'param', name: 'myVar' })).to.equal(42);
+        });
+
+        it(`throws an error if the variable is not in the context object`, () => {
+            const interpreter = new ContextualInterpreter(store, {});
+
+            const evaluator = () => interpreter.evaluateExpression({ type: 'param', name: 'myVar' });
+            expect(evaluator).to.throw(InterpreterError, /PARAMETER_NOT_FOUND/);
+        });
+
     });
 
     describe('executeStatement', () => {
@@ -108,6 +122,24 @@ describe('Interpreter', () => {
             interpreter.executeStatement({ type: 'stmt', action: 'subtract', counter: counter.id, value: 12 });
 
             expect(store.getState().counters.get(counter.id).currentValue).to.equal(3);
+        });
+
+        it('should evaluate arbitrary expressions', () => {
+            const interpreter = new ContextualInterpreter(store, { test: 10 });
+            const counter = new Counter({ currentValue: 15 });
+            store.dispatch(createCounter(counter));
+
+            interpreter.executeStatement({
+                type: 'stmt', action: 'add', counter: counter.id, value:
+                    {
+                        type: 'expr', operator: '+', lhs: 1, rhs:
+                            {
+                                type: 'expr', operator: '+', lhs: counter.id, rhs: { type: 'param', name: 'test' },
+                            },
+                    },
+            });
+
+            expect(store.getState().counters.get(counter.id).currentValue).to.equal(41);
         });
 
     });

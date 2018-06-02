@@ -32,7 +32,6 @@ export class ContextualInterpreter {
     }
 
     private evaluateOperator(operator: OperatorExpression['operator'], lhs: Expression, rhs: Expression): number {
-
         switch (operator) {
             case '+':
                 return this.evaluateExpression(lhs) + this.evaluateExpression(rhs);
