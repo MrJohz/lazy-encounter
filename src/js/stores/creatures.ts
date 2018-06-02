@@ -1,10 +1,8 @@
 import { Record, List, Map } from 'immutable';
 import { Statement } from '../executor/ast';
+import { Attribute } from './creature-attributes';
 
 let currentId = 1;
-
-import { CounterID } from './counters';
-import { Attribute } from './creature-attributes';
 
 export type Action =
     Readonly<{
@@ -36,9 +34,7 @@ export class Creature extends Record<CreatureProps>({
         const id = '' + currentId as CreatureID;
         currentId += 1;
 
-        console.log(Array.from(attributes));
         super({ id, name, attributes: List(attributes), actions: List(actions) });
-        console.log(this.attributes);
     }
 }
 

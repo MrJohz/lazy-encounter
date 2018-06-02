@@ -12,7 +12,9 @@ export const Statblock: StatelessComponent<StatblockProps> = ({ stats }: Statblo
             <div key={stat.name} className={styles.statBox}>
                 <span className={styles.statName}>{stat.name}</span>
                 <span className={styles.mainStat}>{<Num num={stat.value}/>}</span>
-                {stat.computed == null ? null : <span className={styles.calcStat}>{<Num num={stat.computed}/>}</span>}
+                {stat.subValue != null
+                    ? <span className={styles.calcStat}>{<Num num={stat.subValue}/>}</span>
+                    : null}
             </div>)}
     </div>;
 };

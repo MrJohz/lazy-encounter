@@ -13,7 +13,7 @@ export function withSign(n: number): DisplayNumber {
 }
 
 export type StatblockAttribute =
-    Readonly<{ type: 'statblock', stats: { name: string, value: DisplayNumber, computed?: DisplayNumber }[] }>
+    Readonly<{ type: 'statblock', stats: { name: string, value: DisplayNumber, subValue?: DisplayNumber }[] }>
 
 export type Attribute =
     | StatblockAttribute
