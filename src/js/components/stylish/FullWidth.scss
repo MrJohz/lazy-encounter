@@ -1,7 +1,9 @@
+@import "./theme.scss";
+
 .fullWidth {
-    box-sizing: border-box;
     width: 100%;
-    border: 4px greenyellow solid;
+    border: 1px $alt1-strong solid;
+    background-color: $alt1-bg;
     padding: 0.4em;
     margin-top: 0.4em;
 }

@@ -3,5 +3,6 @@ module.exports = {
     plugins: {
         'precss': {},
         'postcss-short': {},
+        'postcss-calc': {},
     }
 };

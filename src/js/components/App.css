@@ -42,6 +42,10 @@
     border-radius: 50%;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 :global(html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -81,7 +85,6 @@ footer, header, hgroup, menu, nav, section) {
     width: 100%;
     font-family: 'Work Sans', sans-serif;
     background-color: #FDFFFC;
-    box-sizing: border-box;
 }
 
 :global(ol, ul) {

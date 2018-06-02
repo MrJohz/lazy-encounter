@@ -3,8 +3,7 @@
 .square {
     composes: shadowed from './theme.scss';
 
-    box-sizing: border-box;
-    width: calc(33% - 0.6em * 2);
+    width: calc(33.33% - 0.6em * 2);
     background-color: $main-bg;
     padding: 0.6em;
     margin: 0.6em;

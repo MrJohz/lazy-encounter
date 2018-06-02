@@ -1,13 +1,13 @@
 import { Store } from 'redux';
-import { createCounter, Counter, CounterID } from './counters';
+import { createCounter, Counter } from './counters';
 import { withSign } from './creature-attributes';
 import { CreatureGroup, createCreatureGroup, addCreatureToGroup } from './creature-groups';
 import { Creature, createCreature, Action } from './creatures';
 
 const STATS = [
-    { name: 'STR', value: 12, computed: withSign(+3) }, { name: 'DEX', value: 12, computed: withSign(+2) },
-    { name: 'CON', value: 12, computed: withSign(-3) }, { name: 'INT', value: 12, computed: withSign(+0) },
-    { name: 'WIS', value: 12, computed: withSign(-2) }, { name: 'CHA', value: 12, computed: withSign(+1) },
+    { name: 'Str', computed: 12, value: withSign(+3) }, { name: 'Dex', computed: 12, value: withSign(+2) },
+    { name: 'Con', computed: 12, value: withSign(-3) }, { name: 'Int', computed: 12, value: withSign(+0) },
+    { name: 'Wis', computed: 12, value: withSign(-2) }, { name: 'Cha', computed: 12, value: withSign(+1) },
 ];
 
 function heal(counter: Counter): Action {

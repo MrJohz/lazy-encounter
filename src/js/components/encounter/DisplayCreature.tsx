@@ -9,14 +9,9 @@ import { Callback } from '../../utils/jsx-props';
 import { FullWidth, Square } from '../stylish';
 import { Statblock } from './display-components/Statblock';
 
-type ImplProps
-    = { creature: Creature | undefined, counters: Map<CounterID, Counter> }
+type ImplProps =
+    & { creature: Creature | undefined, counters: Map<CounterID, Counter> }
     & Callback<'onBack'>;
-
-function pushIf<T>(cond: boolean, value: T): T[] {
-    if (cond) return [value];
-    return [];
-}
 
 const DisplayCreatureImpl: StatelessComponent<ImplProps> = ({ creature, counters, onBack }: ImplProps) => {
     if (!creature) {
@@ -37,7 +32,7 @@ const DisplayCreatureImpl: StatelessComponent<ImplProps> = ({ creature, counters
     actions.push(...creature.actions);
 
     return <FullWidth onBack={onBack} actions={actions.map(a => <Square key={a.name}>{a.name}</Square>)}>
-        {creature.name}
+        <h2>{creature.name}</h2>
         {attributes}
     </FullWidth>;
 };
@@ -49,7 +44,8 @@ const mapStateToProps = (state: AppState, { creatureId, ...rest }: DisplayCreatu
         ...rest,
     });
 
-type DisplayCreatureProps
-    = { creatureId: CreatureID } & Callback<'onBack'>;
+type DisplayCreatureProps =
+    & { creatureId: CreatureID }
+    & Callback<'onBack'>;
 
 export const DisplayCreature = connect(mapStateToProps)(DisplayCreatureImpl);
