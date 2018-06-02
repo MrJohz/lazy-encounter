@@ -1,20 +1,24 @@
 import { Record, List, Map } from 'immutable';
+import { Statement } from '../executor/ast';
 
 let currentId = 1;
 
 import { CounterID } from './counters';
 
-export type CounterDisplayType
-    = 'health'
+export type CounterDisplayType =
+    | 'health'
     | 'pips';
 
-export type Attribute
-    = Readonly<{ type: 'statblock', stats: { name: string, value: number, computed?: null }[] }>
+export type Attribute =
+    | Readonly<{ type: 'statblock', stats: { name: string, value: number, computed?: null }[] }>
     | Readonly<{ type: 'string', value: string }>
     | Readonly<{ type: 'counter', name: string, value: CounterID, display: CounterDisplayType }>;
 
-export type Action
-    = Readonly<{ name: string, text: string }>;
+export type Action =
+    Readonly<{
+        name: string, text: string, actions?: Statement[],
+        parameters?: { name: string, text: string }[]
+    }>;
 
 export type Condition
     = Readonly<{ name: string, color: string }>;
@@ -54,8 +58,8 @@ export class Creature extends Record<CreatureProps>({
     }
 }
 
-type CREATURE_ACTIONS
-    = { type: '@CREATURE/CREATE', creature: Creature }
+type CREATURE_ACTIONS =
+    | { type: '@CREATURE/CREATE', creature: Creature }
     | { type: '@CREATURE/ADD_CONDITION', creatureId: CreatureID, condition: Condition }
     | { type: '@CREATURE/REMOVE_CONDITION', creatureId: CreatureID, condition: Condition };
 

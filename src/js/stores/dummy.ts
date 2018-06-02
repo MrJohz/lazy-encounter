@@ -62,16 +62,23 @@ function owlbears(store: Store) {
 function dragons(store: Store) {
     const attributes = ['red', 'white', 'green', 'blue', 'silver'];
 
-    const archetrixHealth = new Counter(191);
-    const deriynyHealth = new Counter(153);
-    store.dispatch(createCounter(archetrixHealth));
-    store.dispatch(createCounter(deriynyHealth));
+    const archHealth = new Counter(191);
+    const derHealth = new Counter(153);
+    store.dispatch(createCounter(archHealth));
+    store.dispatch(createCounter(derHealth));
 
     const archetrix = new Creature('Archetrix', [
         { type: 'statblock', stats: { ...STATS } },
         { type: 'string', value: attributes[Math.floor(Math.random() * attributes.length)] },
-        { type: 'counter', name: 'Health', value: archetrixHealth.id, display: 'health' },
+        { type: 'counter', name: 'Health', value: archHealth.id, display: 'health' },
     ], [
+        {
+            name: 'Damage', text: '-', actions: [
+                { type: 'stmt', action: 'subtract', counter: archHealth.id, value: { type: 'param', name: 'value' } },
+            ], parameters: [
+                { name: 'value', text: 'How much?' },
+            ],
+        },
         { name: 'Breath', text: '[4d10] damage' },
         { name: 'Bite', text: '[3d6+7] damage' },
     ]);
@@ -80,7 +87,7 @@ function dragons(store: Store) {
     const deriyny = new Creature('Deriyny', [
         { type: 'statblock', stats: { ...STATS } },
         { type: 'string', value: attributes[Math.floor(Math.random() * attributes.length)] },
-        { type: 'counter', name: 'Health', value: deriynyHealth.id, display: 'health' },
+        { type: 'counter', name: 'Health', value: derHealth.id, display: 'health' },
     ], [
         { name: 'Bite', text: '[1d6] damage' },
         { name: 'Claws', text: '[1d4 + 2] damage' },

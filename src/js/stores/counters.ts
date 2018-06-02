@@ -14,15 +14,33 @@ type CounterProps = {
     minValue: number;
 }
 
+type CounterInitialiser = Partial<Pick<CounterProps, 'currentValue' | 'maxValue' | 'minValue'>>;
+
 export class Counter extends Record<CounterProps>({
     id: '!!NOT INITIALISED!!' as CounterID,
     currentValue: 0,
-    maxValue: 0,
-    minValue: 0,
+    maxValue: Infinity,
+    minValue: -Infinity,
 }) {
-    constructor(maxValue: number) {
+    constructor(init?: CounterInitialiser | number) {
         const id = uuid() as CounterID;
-        super({ id, maxValue, minValue: 0, currentValue: maxValue });
+
+        if (init == null) {
+            super({ id });
+        } else if (typeof init === 'number') {
+            super({ id, maxValue: init, minValue: 0, currentValue: init });
+        } else {
+            let currentValue = 0;
+            if (init.currentValue != null) {
+                currentValue = init.currentValue;
+            } else if (init.maxValue != null) {
+                currentValue = init.maxValue;
+            } else if (init.minValue != null) {
+                currentValue = init.minValue;
+            }
+
+            super({ id, ...init, currentValue });
+        }
     }
 }
 
