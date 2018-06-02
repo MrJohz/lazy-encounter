@@ -1,12 +1,32 @@
 import { Store } from 'redux';
-import { createCounter, Counter } from './counters';
+import { createCounter, Counter, CounterID } from './counters';
 import { CreatureGroup, createCreatureGroup, addCreatureToGroup } from './creature-groups';
-import { Creature, createCreature } from './creatures';
+import { Creature, createCreature, Action } from './creatures';
 
 const STATS = [
     { name: 'STR', value: 12 }, { name: 'DEX', value: 12 }, { name: 'CON', value: 12 },
     { name: 'INT', value: 12 }, { name: 'WIS', value: 12 }, { name: 'CHA', value: 12 },
 ];
+
+function heal(counter: Counter): Action {
+    return {
+        name: 'Heal', text: '-', actions: [
+            { type: 'stmt', action: 'add', counter: counter.id, value: { type: 'param', name: 'value' } },
+        ], parameters: [
+            { name: 'value', text: 'How much?' },
+        ],
+    }
+}
+
+function harm(counter: Counter): Action {
+    return {
+        name: 'Damage', text: '-', actions: [
+        { type: 'stmt', action: 'subtract', counter: counter.id, value: { type: 'param', name: 'value' } },
+    ], parameters: [
+        { name: 'value', text: 'How much?' },
+    ],
+    }
+}
 
 function goblins(store: Store) {
     const attributes = ['bold', 'strong', 'clever', 'weak', 'green nose', 'yellow hair', 'ugly'];
@@ -22,6 +42,8 @@ function goblins(store: Store) {
             { type: 'string', value: attributes[Math.floor(Math.random() * attributes.length)] },
             { type: 'counter', name: 'Health', value: health.id, display: 'health' },
         ], [
+            harm(health),
+            heal(health),
             { name: 'Sword', text: '[1d6] damage' },
             { name: 'Claws', text: '[1d4 + 2] damage' },
         ]);
@@ -48,6 +70,8 @@ function owlbears(store: Store) {
             { type: 'string', value: attributes[Math.floor(Math.random() * attributes.length)] },
             { type: 'counter', name: 'Health', value: health.id, display: 'health' },
         ], [
+            harm(health),
+            heal(health),
             { name: 'Bite', text: '[1d6] damage' },
             { name: 'Claws', text: '[1d4 + 2] damage' },
         ]);
@@ -72,13 +96,8 @@ function dragons(store: Store) {
         { type: 'string', value: attributes[Math.floor(Math.random() * attributes.length)] },
         { type: 'counter', name: 'Health', value: archHealth.id, display: 'health' },
     ], [
-        {
-            name: 'Damage', text: '-', actions: [
-                { type: 'stmt', action: 'subtract', counter: archHealth.id, value: { type: 'param', name: 'value' } },
-            ], parameters: [
-                { name: 'value', text: 'How much?' },
-            ],
-        },
+        harm(archHealth),
+        heal(archHealth),
         { name: 'Breath', text: '[4d10] damage' },
         { name: 'Bite', text: '[3d6+7] damage' },
     ]);
@@ -89,6 +108,8 @@ function dragons(store: Store) {
         { type: 'string', value: attributes[Math.floor(Math.random() * attributes.length)] },
         { type: 'counter', name: 'Health', value: derHealth.id, display: 'health' },
     ], [
+        harm(derHealth),
+        heal(derHealth),
         { name: 'Bite', text: '[1d6] damage' },
         { name: 'Claws', text: '[1d4 + 2] damage' },
     ]);
