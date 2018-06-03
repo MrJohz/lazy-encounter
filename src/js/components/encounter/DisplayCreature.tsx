@@ -7,6 +7,7 @@ import { Creature, CreatureID } from '../../stores/creatures';
 import { Callback } from '../../utils/jsx-props';
 import { FullWidth, Square } from '../stylish';
 import { CounterDisplay } from './display-components/CounterDisplay';
+import { Filler } from './display-components/Filler';
 import { Statblock } from './display-components/Statblock';
 
 type ImplProps =
@@ -27,6 +28,8 @@ const DisplayCreatureImpl: StatelessComponent<ImplProps> = ({ creature, counters
                 case 'counter':
                     const counter = counters.get(attr.value) as Counter;
                     return <CounterDisplay key={idx} name={attr.name} counter={counter} display={attr.display}/>;
+                case 'filler':
+                    return <Filler key={idx} />
             }
         })}
     </FullWidth>;
