@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { AppState } from '../../stores';
 import { CounterID, Counter } from '../../stores/counters';
 import { Creature, CreatureID } from '../../stores/creatures';
-import { enumerate } from '../../utils/iterator';
 import { Callback } from '../../utils/jsx-props';
 import { FullWidth, Square } from '../stylish';
+import { CounterDisplay } from './display-components/CounterDisplay';
 import { Statblock } from './display-components/Statblock';
 
 type ImplProps =
@@ -18,22 +18,17 @@ const DisplayCreatureImpl: StatelessComponent<ImplProps> = ({ creature, counters
         return <span>'ERROR!'</span>;
     }
 
-    const actions = [];
-    const attributes = [];
-
-    for (const [idx, attr] of enumerate(creature.attributes)) {
-        switch (attr.type) {
-            case 'statblock':
-                attributes.push(<Statblock key={idx} stats={attr.stats}/>);
-                break;
-        }
-    }
-
-    actions.push(...creature.actions);
-
-    return <FullWidth onBack={onBack} actions={actions.map(a => <Square key={a.name}>{a.name}</Square>)}>
+    return <FullWidth onBack={onBack} actions={creature.actions.map(a => <Square key={a.name}>{a.name}</Square>)}>
         <h2>{creature.name}</h2>
-        {attributes}
+        {creature.attributes.map((attr, idx) => {
+            switch (attr.type) {
+                case 'statblock':
+                    return <Statblock key={idx} stats={attr.stats}/>;
+                case 'counter':
+                    const counter = counters.get(attr.value) as Counter;
+                    return <CounterDisplay key={idx} name={attr.name} counter={counter} display={attr.display}/>;
+            }
+        })}
     </FullWidth>;
 };
 

@@ -88,15 +88,20 @@ function owlbears(store: Store) {
 function dragons(store: Store) {
     const attributes = ['red', 'white', 'green', 'blue', 'silver'];
 
-    const archHealth = new Counter(191);
+    const archHealth = new Counter({ maxValue: 191, currentValue: 173 });
     const derHealth = new Counter(153);
     store.dispatch(createCounter(archHealth));
     store.dispatch(createCounter(derHealth));
 
+    const archSpells = new Counter(3);
+    store.dispatch(createCounter(archSpells));
+
     const archetrix = new Creature('Archetrix', [
         { type: 'statblock', stats: [...STATS] },
         { type: 'string', value: attributes[Math.floor(Math.random() * attributes.length)] },
+        { type: 'filler' },
         { type: 'counter', name: 'Health', value: archHealth.id, display: 'health' },
+        { type: 'counter', name: 'Spell Slots', value: archSpells.id, display: 'pips' },
     ], [
         harm(archHealth),
         heal(archHealth),

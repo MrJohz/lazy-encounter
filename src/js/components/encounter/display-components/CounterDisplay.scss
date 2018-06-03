@@ -1,0 +1,29 @@
+.healthBox {
+    display: block;
+    flex-basis: calc(100% / 3);
+    padding: 0.9em;
+    text-align: center;
+}
+
+.healthTitle {
+    font-size: 0.9em;
+    padding-right: 0.5em;
+}
+
+.healthValue {
+    font-size: 1.3em;
+}
+
+.healthBarEmpty {
+    display:block;
+    width: 80%;
+    height: 3px;
+    margin: 0.4em auto 0;
+    background-color: red;
+}
+
+.healthBarFull {
+    height: 100%;
+    display: block;
+    background-color: green;
+}

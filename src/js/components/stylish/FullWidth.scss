@@ -6,6 +6,13 @@
     background-color: $alt1-bg;
     padding: 0.4em;
     margin-top: 0.4em;
+    display: flex;
+    flex-wrap: wrap;
+
+    h2 {
+        padding-left: 0.8em;
+        flex-basis: 100%;
+    }
 }
 
 .backButton {
