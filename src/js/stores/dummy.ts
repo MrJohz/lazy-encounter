@@ -93,7 +93,7 @@ function dragons(store: Store) {
     store.dispatch(createCounter(archHealth));
     store.dispatch(createCounter(derHealth));
 
-    const archSpells = new Counter(3);
+    const archSpells = new Counter({maxValue: 5, currentValue: 3});
     store.dispatch(createCounter(archSpells));
 
     const archetrix = new Creature('Archetrix', [

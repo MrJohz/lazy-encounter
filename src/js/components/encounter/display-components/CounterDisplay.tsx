@@ -10,16 +10,25 @@ type CounterProps =
 const HealthCounter: StatelessComponent<CounterProps> = ({ name, counter }: CounterProps) => {
     const width = (counter.currentValue / counter.maxValue * 100) + '%';
 
-    return <div className={styles.healthBox}>
+    return <div className={styles.counterBox}>
         <span className={styles.healthTitle}>{name}:</span>
-        <span className={styles.healthValue}>{counter.currentValue} / {counter.maxValue}</span>
-        <span className={styles.healthBarEmpty}><span style={{ width }} className={styles.healthBarFull} /></span>
+        <span className={styles.counterValue}>{counter.currentValue} / {counter.maxValue}</span>
+        <span className={styles.healthBarEmpty}><span style={{ width }} className={styles.healthBarFull}/></span>
     </div>;
 };
 
-const PipCounter: StatelessComponent<CounterProps> = ({ counter }: CounterProps) => {
-    const list: string[] = Array(counter.currentValue).fill('*');
-    return <div>{list}</div>;
+const PipCounter: StatelessComponent<CounterProps> = ({ name, counter }: CounterProps) => {
+    const used: string[] = Array(counter.currentValue).fill('️⚫');
+    const spare: string[] = Array(counter.maxValue - counter.currentValue).fill('⚪️');
+    const spans = used
+        .concat(spare)
+        .map((char, idx) =>
+            <span key={idx} className={styles.pipItem}>{char}</span>);
+
+    return <div className={styles.counterBox}>
+        <span className={styles.pipTitle}>{name}</span>
+        <span className={styles.pipValue}>{spans}</span>
+    </div>;
 };
 
 type CounterDispProps = { name: string, counter: Counter, display: CounterDisplayType }
