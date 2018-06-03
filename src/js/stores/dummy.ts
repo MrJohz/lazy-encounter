@@ -42,7 +42,9 @@ function goblins(store: Store) {
         const creature = new Creature(`Goblin ${idx}`, [
             { type: 'statblock', stats: [...STATS] },
             { type: 'string', value: attributes[Math.floor(Math.random() * attributes.length)] },
+            { type: 'filler' },
             { type: 'counter', name: 'Health', value: health.id, display: 'health' },
+            { type: 'filler' },
         ], [
             harm(health),
             heal(health),

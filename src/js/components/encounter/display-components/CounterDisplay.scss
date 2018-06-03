@@ -1,6 +1,6 @@
 .counterBox {
     display: block;
-    flex-basis: calc(100% / 3);
+    width: calc(100% / 3);
     padding: 0.9em;
     text-align: center;
 }
@@ -38,6 +38,8 @@
 }
 
 .pipValue {
+    overflow-wrap: break-word;
+    text-wrap: balance;  // not yet implemented, but we can keep it around for the future
     font-size: 1.7em;
     padding-top: 0.3em;
 }
