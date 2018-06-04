@@ -5,13 +5,13 @@
     border: 1px $alt1-strong solid;
     background-color: $alt1-bg;
     padding: 0.4em;
-    margin-top: 0.4em;
+    margin: 0.4em auto 1em;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
 
     h2 {
-        padding-left: 0.8em;
+        padding: 0.45em 3em 0.45em;
         flex-basis: 100%;
     }
 }
@@ -19,4 +19,11 @@
 .backButton {
     border: 1px darkblue;
     background: cornflowerblue;
+}
+
+.actionBar {
+    width: 85%;
+    margin: 0 auto;
+    display: flex;
+    flex-flow: row wrap;
 }

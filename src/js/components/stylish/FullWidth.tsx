@@ -12,7 +12,9 @@ type Props = Children
 export const FullWidth: StatelessComponent<Props> = ({ children, actions=[], onBack }: Props) => {
     return <>
         <div className={styles.fullWidth}>{children}</div>
+        <div className={styles.actionBar}>
         <Back onBack={onBack}/>
         {actions}
+        </div>
     </>;
 };

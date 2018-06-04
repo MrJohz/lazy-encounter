@@ -9,10 +9,10 @@
 }
 
 .statBox {
-    flex-basis: calc(100% / 8 - 1em * 2);  // fit at most 8 per row
+    flex-basis: calc(100% / 8 - 1em);
     background-color: $alt2-bg;
     padding: 0.6em 0.3em;
-    margin: 0.2em 1em;
+    margin: 0.2em 0;
     border: $alt2-strong solid 1px;
     position: relative;
 

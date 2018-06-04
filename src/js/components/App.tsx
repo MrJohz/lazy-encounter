@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { ShortyProvider } from '../shorty/react';
 import { Encounter } from './encounter/Encounter';
 
-import styles from './App.css';
+import styles from './App.scss';
 
 export function App() {
     return <div className={styles.app}>
