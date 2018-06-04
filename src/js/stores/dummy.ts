@@ -3,6 +3,7 @@ import { createCounter, Counter } from './counters';
 import { withSign, StatblockAttribute } from './creature-attributes';
 import { CreatureGroup, createCreatureGroup, addCreatureToGroup } from './creature-groups';
 import { Creature, createCreature, Action } from './creatures';
+import lipsum from 'lorem-ipsum';
 
 const STATS: StatblockAttribute['stats'] = [
     { name: 'Str', subValue: 12, value: withSign(+3) }, { name: 'Dex', subValue: 12, value: withSign(+2) },
@@ -39,18 +40,20 @@ function goblins(store: Store) {
         const health = new Counter(14);
         store.dispatch(createCounter(health));
 
-        const creature = new Creature(`Goblin ${idx}`, [
-            { type: 'statblock', stats: [...STATS] },
-            { type: 'string', value: attributes[Math.floor(Math.random() * attributes.length)] },
-            { type: 'filler' },
-            { type: 'counter', name: 'Health', value: health.id, display: 'health' },
-            { type: 'filler' },
-        ], [
-            harm(health),
-            heal(health),
-            { name: 'Sword', text: '[1d6] damage' },
-            { name: 'Claws', text: '[1d4 + 2] damage' },
-        ]);
+        const creature = new Creature(`Goblin ${idx}`,
+            [attributes[Math.floor(Math.random() * attributes.length)]],
+            [
+                { type: 'statblock', stats: [...STATS] },
+                { type: 'filler' },
+                { type: 'counter', name: 'Health', value: health.id, display: 'health' },
+                { type: 'filler' },
+            ],
+            [
+                harm(health),
+                heal(health),
+                { name: 'Sword', text: '[1d6] damage' },
+                { name: 'Claws', text: '[1d4 + 2] damage' },
+            ]);
         store.dispatch(createCreature(creature));
 
         creatureIds.push(creature.id);
@@ -69,16 +72,18 @@ function owlbears(store: Store) {
         const health = new Counter(52);
         store.dispatch(createCounter(health));
 
-        const creature = new Creature('Owlbear', [
-            { type: 'statblock', stats: [...STATS] },
-            { type: 'string', value: attributes[Math.floor(Math.random() * attributes.length)] },
-            { type: 'counter', name: 'Health', value: health.id, display: 'health' },
-        ], [
-            harm(health),
-            heal(health),
-            { name: 'Bite', text: '[1d6] damage' },
-            { name: 'Claws', text: '[1d4 + 2] damage' },
-        ]);
+        const creature = new Creature('Owlbear',
+            [attributes[Math.floor(Math.random() * attributes.length)]],
+            [
+                { type: 'statblock', stats: [...STATS] },
+                { type: 'counter', name: 'Health', value: health.id, display: 'health' },
+            ],
+            [
+                harm(health),
+                heal(health),
+                { name: 'Bite', text: '[1d6] damage' },
+                { name: 'Claws', text: '[1d4 + 2] damage' },
+            ]);
         store.dispatch(createCreature(creature));
 
         const creatureGroup = new CreatureGroup(`Owlbear ${idx}`);
@@ -95,33 +100,38 @@ function dragons(store: Store) {
     store.dispatch(createCounter(archHealth));
     store.dispatch(createCounter(derHealth));
 
-    const archSpells = new Counter({maxValue: 5, currentValue: 3});
+    const archSpells = new Counter({ maxValue: 5, currentValue: 3 });
     store.dispatch(createCounter(archSpells));
 
-    const archetrix = new Creature('Archetrix', [
-        { type: 'statblock', stats: [...STATS] },
-        { type: 'string', value: attributes[Math.floor(Math.random() * attributes.length)] },
-        { type: 'filler' },
-        { type: 'counter', name: 'Health', value: archHealth.id, display: 'health' },
-        { type: 'counter', name: 'Spell Slots', value: archSpells.id, display: 'pips' },
-    ], [
-        harm(archHealth),
-        heal(archHealth),
-        { name: 'Breath', text: '[4d10] damage' },
-        { name: 'Bite', text: '[3d6+7] damage' },
-    ]);
+    const archetrix = new Creature('Archetrix',
+        [attributes[Math.floor(Math.random() * attributes.length)]],
+        [
+            { type: 'statblock', stats: [...STATS] },
+            { type: 'filler' },
+            { type: 'counter', name: 'Health', value: archHealth.id, display: 'health' },
+            { type: 'counter', name: 'Spell Slots', value: archSpells.id, display: 'pips' },
+            { type: 'free-text', value: `**Markdown *exists*** ${lipsum({count: 2, units: 'paragraphs'})}` },
+        ],
+        [
+            harm(archHealth),
+            heal(archHealth),
+            { name: 'Breath', text: '[4d10] damage' },
+            { name: 'Bite', text: '[3d6+7] damage' },
+        ]);
     store.dispatch(createCreature(archetrix));
 
-    const deriyny = new Creature('Deriyny', [
-        { type: 'statblock', stats: [...STATS] },
-        { type: 'string', value: attributes[Math.floor(Math.random() * attributes.length)] },
-        { type: 'counter', name: 'Health', value: derHealth.id, display: 'health' },
-    ], [
-        harm(derHealth),
-        heal(derHealth),
-        { name: 'Bite', text: '[1d6] damage' },
-        { name: 'Claws', text: '[1d4 + 2] damage' },
-    ]);
+    const deriyny = new Creature('Deriyny',
+        [attributes[Math.floor(Math.random() * attributes.length)]],
+        [
+            { type: 'statblock', stats: [...STATS] },
+            { type: 'counter', name: 'Health', value: derHealth.id, display: 'health' },
+        ],
+        [
+            harm(derHealth),
+            heal(derHealth),
+            { name: 'Bite', text: '[1d6] damage' },
+            { name: 'Claws', text: '[1d4 + 2] damage' },
+        ]);
     store.dispatch(createCreature(deriyny));
 
     const creatureGroup = new CreatureGroup(`Dragons`);

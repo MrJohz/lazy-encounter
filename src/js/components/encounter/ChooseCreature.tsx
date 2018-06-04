@@ -48,9 +48,7 @@ export class DisplayType extends Component<DisplayTypeProps> {
         const creature = kind.creatures.get(0) as Creature;
         return <Square onClick={() => onSelect(creature.id)}>
             <Shortcut shortcut={kind.name} onTrigger={() => onSelect(creature.id)}>
-                {kind.name} - {creature.attributes
-                .filter(attr => attr.type === 'string')
-                .map((attr: any) => attr['value'])}
+                {kind.name} - {creature.features}
                 <ShortcutKeys/>
             </Shortcut>
         </Square>;
@@ -60,9 +58,7 @@ export class DisplayType extends Component<DisplayTypeProps> {
         const popupChildren = kind.creatures.map(creature =>
             <PopupItem key={creature.name} onClick={noBubble(() => onSelect(creature.id))}>
                 <Shortcut shortcut={creature.name} onTrigger={() => onSelect(creature.id)}>
-                    {creature.name} - {creature.attributes
-                    .filter(attr => attr.type === 'string')
-                    .map((attr: any) => attr['value'])}
+                    {creature.name} - {creature.features}
                     <ShortcutKeys/>
                 </Shortcut>
             </PopupItem>);

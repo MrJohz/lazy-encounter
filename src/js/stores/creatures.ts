@@ -18,23 +18,31 @@ type CreatureProps = {
     id: CreatureID;
     name: string;
 
-    attributes: List<Attribute>;
-    actions: List<Action>;
+    features: ReadonlyArray<string>;
+    attributes: ReadonlyArray<Attribute>;
+    actions: ReadonlyArray<Action>;
     conditions: List<Condition>;
 }
 
 export class Creature extends Record<CreatureProps>({
     id: '!!NOT INITIALISED!!' as CreatureID,
     name: '',
-    attributes: List(),
-    actions: List(),
+    features: [],
+    attributes: [],
+    actions: [],
     conditions: List(),
 }) {
-    constructor(name: string, attributes: Iterable<Attribute>, actions: Iterable<Action>) {
+    constructor(name: string, features: Iterable<string>, attributes: Iterable<Attribute>, actions: Iterable<Action>) {
         const id = '' + currentId as CreatureID;
         currentId += 1;
 
-        super({ id, name, attributes: List(attributes), actions: List(actions) });
+        super({
+            id,
+            name,
+            features: Array.from(features),
+            attributes: Array.from(attributes),
+            actions: Array.from(actions),
+        });
     }
 }
 

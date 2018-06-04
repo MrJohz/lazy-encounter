@@ -17,6 +17,6 @@ export type StatblockAttribute =
 
 export type Attribute =
     | StatblockAttribute
-    | Readonly<{ type: 'string', value: string }>
+    | Readonly<{ type: 'free-text', value: string }>
     | Readonly<{ type: 'counter', name: string, value: CounterID, display: CounterDisplayType }>
     | Readonly<{ type: 'filler' }>
