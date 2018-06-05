@@ -110,7 +110,7 @@ function dragons(store: Store) {
             { type: 'filler' },
             { type: 'counter', name: 'Health', value: archHealth.id, display: 'health' },
             { type: 'counter', name: 'Spell Slots', value: archSpells.id, display: 'pips' },
-            { type: 'free-text', value: `**Markdown *exists*** ${lipsum({count: 2, units: 'paragraphs'})}` },
+            { type: 'free-text', value: `**Markdown *exists*** ${lipsum({count: 3, units: 'paragraphs'})}` },
         ],
         [
             harm(archHealth),
