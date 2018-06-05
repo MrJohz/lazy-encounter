@@ -48,7 +48,8 @@ export class DisplayType extends Component<DisplayTypeProps> {
         const creature = kind.creatures.get(0) as Creature;
         return <Square onClick={() => onSelect(creature.id)}>
             <Shortcut shortcut={kind.name} onTrigger={() => onSelect(creature.id)}>
-                {kind.name} - {creature.features}
+                <h3>{kind.name}</h3>
+                {creature.features}
                 <ShortcutKeys/>
             </Shortcut>
         </Square>;
@@ -65,7 +66,8 @@ export class DisplayType extends Component<DisplayTypeProps> {
 
         return <Square popups={popupChildren} popupOpen={this.state.open} onClick={this.invertSelector}>
             <Shortcut shortcut={kind.name} onTrigger={this.invertSelector}>
-                {kind.name} - {kind.creatures.size} entries
+                <h3>{kind.name}</h3>
+                {this.state.open ? null : `${kind.creatures.size} entries`}
                 <ShortcutKeys/>
             </Shortcut>
         </Square>;

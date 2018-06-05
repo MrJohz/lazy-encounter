@@ -27,6 +27,8 @@ export function noBubble<T, U>(cb: EventCallback<T, U>): EventCallback<T, U> {
     };
 }
 
+export function noop() {}
+
 // used to determine whether a particular generic argument has been provided, or if it is
 // the default argument.
 type SENTINEL = { __varargs_hack_sentinel: '__varargs_hack_sentinel' };

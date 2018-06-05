@@ -8,8 +8,12 @@
     "outDir": "./dist/js",
     "importHelpers": true,
     "lib": ["es2015", "dom", "esnext.asynciterable"],
+
     /* Strict Type-Checking Options */
     "strict": true,
+
+    // currently it breaks ImmutableJS if this is not set
+    "keyofStringsOnly": true,
 
     /* Module Resolution Options */
     "baseUrl": "./",

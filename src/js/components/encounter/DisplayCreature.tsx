@@ -1,15 +1,32 @@
 import { Map } from 'immutable';
 import React, { StatelessComponent } from 'react';
 import { connect } from 'react-redux';
+import { withState } from 'recompose';
+
 import { AppState } from '../../stores';
 import { CounterID, Counter } from '../../stores/counters';
-import { Creature, CreatureID } from '../../stores/creatures';
-import { Callback } from '../../utils/jsx-props';
+import { Creature, CreatureID, Action } from '../../stores/creatures';
+import { Callback, noBubble } from '../../utils/jsx-props';
 import { FullWidth, Square } from '../stylish';
+import { Modal, Response } from '../stylish/Modal';
 import { CounterDisplay } from './display-components/CounterDisplay';
 import { Filler } from './display-components/Filler';
 import { FreeText } from './display-components/FreeText';
 import { Statblock } from './display-components/Statblock';
+
+type ActionProps =
+    & { action: Action }
+    & { modalOpen: boolean, setOpen: (arg: boolean) => boolean }
+
+const ActionButtonImpl: StatelessComponent<ActionProps> = ({ action, modalOpen, setOpen }: ActionProps) => {
+    return <Square onClick={noBubble(() => setOpen(!modalOpen))}>
+        <h3>{action.name}</h3>
+        <p>{action.text}</p>
+        <Modal open={modalOpen} onClose={(resp: Response) => console.log(resp)}>hello?</Modal>
+    </Square>;
+};
+
+const ActionButton = withState('modalOpen', 'setOpen', false)(ActionButtonImpl);
 
 type ImplProps =
     & { creature: Creature | undefined, counters: Map<CounterID, Counter> }
@@ -20,7 +37,7 @@ const DisplayCreatureImpl: StatelessComponent<ImplProps> = ({ creature, counters
         return <span>'ERROR!'</span>;
     }
 
-    return <FullWidth onBack={onBack} actions={creature.actions.map(a => <Square key={a.name}>{a.name}</Square>)}>
+    return <FullWidth onBack={onBack} actions={creature.actions.map(a => <ActionButton key={a.name} action={a}/>)}>
         <h2>{creature.name}</h2>
         {creature.attributes.map((attr, idx) => {
             switch (attr.type) {
@@ -32,7 +49,7 @@ const DisplayCreatureImpl: StatelessComponent<ImplProps> = ({ creature, counters
                 case 'filler':
                     return <Filler key={idx}/>;
                 case 'free-text':
-                    return <FreeText text={attr.value}/>;
+                    return <FreeText key={idx} text={attr.value}/>;
             }
         })}
     </FullWidth>;

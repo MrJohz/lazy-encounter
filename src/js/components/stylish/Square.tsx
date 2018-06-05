@@ -13,6 +13,6 @@ export function Square({ children, popups, popupOpen, ...rest }: Props) {
 
     return <div className={styles.square} {...rest}>
         {childrenise(children)}
-        <Popup isOpen={popupOpen || false} children={popups}/>
+        {popups ? <Popup isOpen={popupOpen || false} children={popups}/> : null }
     </div>;
 }

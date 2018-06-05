@@ -1,0 +1,28 @@
+@import "./theme";
+
+.modal {
+    position: fixed;
+    width: 40vw;
+    max-height: 70vh;
+    overflow-y: auto;
+    top: 50%;
+    left: 50%;
+    margin-left: calc(40vw / 2 * -1);
+    margin-top: calc(70vh / 2 * -1);
+
+    background-color: $alt2-bg;
+    border: $alt2-strong solid 1px;
+    z-index: 100;
+}
+
+.modalBackground {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 90;
+
+    background-color: $window-background;
+    opacity: 0.9;
+}
