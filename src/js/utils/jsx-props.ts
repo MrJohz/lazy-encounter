@@ -40,9 +40,9 @@ type SENTINEL = { __varargs_hack_sentinel: '__varargs_hack_sentinel' };
 // e.g. Callback<'onClick'>            =>     { onClick: () => void }
 //      Callback<'onClick', MyEvent>   =>     { onClick: (param1: MyEvent) => void }
 export type Callback<Name extends string, Param1=SENTINEL, Param2=SENTINEL, Param3=SENTINEL> =
-    Param1 extends SENTINEL ? { [key in Name]: () => void }
-        : Param2 extends SENTINEL ? { [key in Name]: (param1: Param1) => void}
-        : Param3 extends SENTINEL ? { [key in Name]: (param1: Param1, param2: Param2) => void}
+    [Param1] extends [SENTINEL] ? { [key in Name]: () => void }
+        : [Param2] extends [SENTINEL] ? { [key in Name]: (param1: Param1) => void}
+        : [Param3] extends [SENTINEL] ? { [key in Name]: (param1: Param1, param2: Param2) => void}
         : { [key in Name]: (param1: Param1, param2: Param2, param3: Param3) => void};
 
 export type Match<T> = { match: match<T> };

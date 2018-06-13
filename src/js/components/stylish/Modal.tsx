@@ -1,6 +1,6 @@
 import lipsum from 'lorem-ipsum';
 import React, { StatelessComponent } from 'react';
-import { Children, noBubble, noop } from '../../utils/jsx-props';
+import { Children, noBubble, noop, Callback } from '../../utils/jsx-props';
 
 import styles from './Modal.scss';
 
@@ -9,7 +9,7 @@ export type Response =
     | null
 
 type ModalProps =
-    & { onClose: (resp: Response) => void }  // manual Callback defn - see https://github.com/Microsoft/TypeScript/issues/24686
+    & Callback<'onClose', Response>
     & { open: boolean }
     & Children
 
